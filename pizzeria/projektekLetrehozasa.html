@@ -1,0 +1,98 @@
+<h3>Projektek létrehozása</h3>
+<p class="mb-0">A feladat definiálása során meghatározott feladatokhoz - szerintem - az alábbi projekteket kellene létrehozni a <i>solution</i>ben:</p>
+<ul>
+    <li><b>pizzeria.data</b>: ez a projekt felelne az adatelérésért</li>
+    <li><b>pizzeria.service</b>: ebben a rétegben kerülne definiálsra az üzleti logika</li>
+    <li><b>pizzeria.website</b>: ez a projekt felelne a webes megjelenésért (Rest API & Angular)</li>
+</ul>
+
+<div class="w-75 mx-auto text-center" style="min-width: 680px;">
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="create-project-windows" data-bs-toggle="tab" data-bs-target="#createProjectWindows" type="button"  role="tab" aria-controls="createProjectWindows" aria-selected="true">
+                Projekt létrehozása - Windows
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="create-project-linux" data-bs-toggle="tab" data-bs-target="#createProjectLinux" type="button"  role="tab" aria-controls="createProjectLinux" aria-selected="true">
+                Projekt létrehozása - Linux
+            </button>
+        </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="createProjectWindows" role="tabpanel" aria-labelledby="create-project-windows">
+            <iframe width="672" height="378" src="https://www.youtube.com/embed/aY_CDfGNTiM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        <div class="tab-pane fade" id="createProjectLinux" role="tabpanel" aria-labelledby="create-project-linux">
+            <iframe width="672" height="378" src="https://www.youtube.com/embed/2Y4OK4iHER4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+    </div>
+</div>
+
+<p class="mt-3">
+    A fenti videóban (Windows-os verzió) Visual Studó 2022-et használtam (a Preview 2.0-s verziót), és a keretrendszernek a .Net Core 6.0 (szintén még csak preview verziót) választottam. 
+    A projekteket létrehozása után a két <i>class library</i>-ből töröltem a <i>Class1.cs</i> állományokat.
+</p>
+<div class="keretes">
+    <p>
+        A <b>pizzeria.website</b> projekt típusa <b>ASP.NET Core Web App</b>, amihez integrálva van egy Angular alkalmazás is. Ezen dokumentum készítésekor ennek az Angular alkalmazásnak a verziószáma 12.0 volt, miközben az Angular
+        <a href="https://angular.io" target="info">hivatalos oldal</a>án a legfrisebb elérhető verzió a 12.1-es. Ekkora eltérés nem lenne probléma, azonban a tapasztalat az, hogy a Microsoft nem követi ennél a projekt típusnál 
+        az Angular verzió frissítéseit.
+    </p>
+    <p>
+        A fentiek miatt érdemes elvégezni a website projekt könyvtárában lévő <b>ClientApp</b> mappában lévő Angular alkalmazás frissítését.
+    </p>
+</div>
+<p class="mb-0">További (később) elvégzendő feladatok:</p>
+<ul>
+    <li>a webalkalmazásból törölni kell az időjárás előrejelzéssel kapcsolatos tartalmakat. </li>
+    <li>a létrehozott projektek közötti referenciákat be kell állítani</li>
+</ul>
+
+<hr>
+
+<!-- ---------------------------------------------------------------------------------------------------------- -->
+
+<h3 id="elsoInditas">Projekt első indítása</h3>
+<p>Mivel még az időjárás jelentésre vonatkozó részek törlése nem történt meg, ezért a projekt indítása után ez fog megjelenni.</p>
+<div class="keretes">
+    Az első indítás a számítógép sebességétől függően néhány percig is eltarthat, hiszen az Angular kliensnek le kell töltenie a szükséges csomagokat.
+</div>
+
+<div>
+    <ul class="nav nav-tabs" id="myTab2" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="run-project-windows" data-bs-toggle="tab" data-bs-target="#runProjectWindows" type="button"  role="tab" aria-controls="runProjectWindows" aria-selected="true">
+                Projekt indítása - Windows
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="run-project-linux" data-bs-toggle="tab" data-bs-target="#runProjectLinux" type="button"  role="tab" aria-controls="runProjectLinux" aria-selected="true">
+                Projekt indítása - Linux
+            </button>
+        </li>
+    </ul>
+    <div class="tab-content mx-3" id="myTabContent2">
+        <div class="tab-pane fade show active" id="runProjectWindows" role="tabpanel" aria-labelledby="run-project-windows">
+            <p class="mt-2">
+                A Visual Studio-ban egy CTRL-F5-t nyomva megtörténik mind a kliens (Angular), mind a szerver oldali (C#) kódok fordítása. Az így létrejött futtatható programot a Visual Studio 2019-től eltérő módon már nem az IIS Express, 
+                mint webszerver fogja kiszolgálni, hanem a backend futtatását .Net CLI, a frontend futtatását az Angular Cli végzi.
+                (Amennyiben szükség lenne a kód debug-golására akkor, F5-el is indítható.)
+            </p>
+            <div class="w-75 mx-auto text-center" style="min-width: 680px;">
+                <iframe width="672" height="378" src="https://www.youtube.com/embed/WwQrPh_PmU4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="runProjectLinux" role="tabpanel" aria-labelledby="run-project-linux">
+            <p class="mt-2">
+                Terminál ablakból a megfelelő könyvtárban <i>dotnet run</i> paranccsal lehet az alkalmazást elindítani. A videóban én a Visual Studio Code beépített terminál ablakát használtam. A böngésző nem indul el automatikusan, azt kézzel kell indítani és a címet beírni.
+            </p>
+            <div class="w-75 mx-auto text-center" style="min-width: 680px;">
+                <iframe width="672" height="378" src="https://www.youtube.com/embed/NraWWNE9zDU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+    <p>
+        A sikeres indítást követően az alapértelmezett böngészőben megjelenik a weboldal. Elképzelhető hogy engedélyezni kell a https megjelenítését, ugyanis a használt tanusítvány nincs digitálisan aláírva.
+    </p>
+</div>

@@ -1,0 +1,85 @@
+<h3>Feladat definiálása</h3>
+<p>A dokumentáció további lépéseinek bemutatása egy minta projekten keresztül fog történni. Ehhez először a feladatot kell meghatározni.</p>
+<p class="fw-bold my-3">A feladat egy csak kiszállítással foglalkozó pizzéria rendelési rendszerének elkészítése.</p>
+
+<p class="mb-0">A "megrendelő" igényei:</p>
+<ul>
+    <li>rugalmasan lehessen a kínálatot módosítani (rendelhető pizzák, árak)</li>
+    <li>
+        a pizzákról legyen:
+        <ul>
+            <li>egy rövid leírás</li>
+            <li>fénykép(ek)</li>
+            <li>lehetőség jelölni, hogy milyen érzékenységű vásárlók fogyaszthatják</li>
+        </ul>
+    </li>
+    <li>a megrendelés után kapjanak üzenetet a megrendelésről</li>
+    <li>egy későbbi verzióban esetleg a kiszállítást is szeretnék nyomon követni.</li>
+</ul>
+
+<hr>
+
+<p class="mb-0">Vegyük sorba, hogy milyen funkciókat kell a fentiek alapján (az első körben) megvalósítani:</p>
+<ul>
+    <li>
+        Szükség van valamilyen jogosultsági rendszerre. 
+        <ul>
+            <li>
+                El kell különíteni a pizzéria dolgozóit akik:
+                <ul>
+                    <li>módosíthatják az étlapot, és az árakat</li>
+                    <li>látják a beérkezett megrendeléseket</li>
+                    <li>rögzíthetik, hogy mely megrendelések teljesültek</li>                              
+                </ul>
+            </li>
+            <li>
+                Minden ügyfelet regisztrálni kell, akik
+                <ul>
+                    <li>rendelést tudnak leadni</li>
+                    <li>láthatják a korábbi rendeléseiket</li>
+                </ul>
+            </li>
+        </ul>
+    </li>
+    <li>Meg kell valósítani az étlap rögzítését, módosítását, és az árak idősoros nyilvántartását </li>
+    <li>Szükség lesz "tag"-ekre, amelyet az étlapon szereplő pizzákhoz lehet rendelni. pl.: laktóz érzékenyeknek, csípős, stb...</li>
+    <li>Meg kell valósítani a rendelések leadását</li>
+    <li>Meg kell valósítani a korábbi rendelések listázást</li>
+    <li>
+        A pizzériában ki kell alakítani valamilyen rendszert, ami
+        <ul>
+            <li>jelez, ha új megrendelés érkezik</li>
+            <li>meg lehet jelölni, hogy egy rendelés készítését elkezdték</li>
+            <li>jelölni lehet, hogy egy rendelés elkészült</li>
+        </ul>
+    </li>
+    <li>A későbbiek folyamán elképzelhető, hogy mobil alkalmazást is kell fejleszteni</li>
+</ul>
+
+<hr>
+
+<p class="mb-0">A fentiek figyelembe vételével ki kellene alakítani az alkalmazás felépítését, rétegeit. Szükség lesz:</p>
+<ul>
+    <li>adatbázisra</li>
+    <li>adatelérési rétegre (pl.: Entity Framework)</li>
+    <li>az üzleti logikát megvalósító rétegre</li>
+    <li>back-end-re, ami a kezeli a beérkező kéréseket (Rest API)</li>
+    <li>
+        megjelenítési rétegre, ami lehet
+        <ul>
+            <li>weboldal</li>
+            <li>mobil alkalmazás</li>
+            <li>a pizzériában esetleg egy vastag kliens (pl.: WPF) alkalmazás</li>
+        </ul>
+    </li>
+</ul>
+
+<hr>
+
+
+<div class="row my-3">
+    <div class="offset-1 col-5"></div>
+    <div class="col-5 text-end">
+        <button class="btn btn-secondary">Tovább</button>
+    </div>
+</div>

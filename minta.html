@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leírások, dokumentációk</title>
+    <link rel="stylesheet" href="site.css">
+
+</head>
+<body>
+    <h1>Teszt</h1>
+    <pre>
+        <code class="language-csharp">
+            using Microsoft.AspNetCore.Builder;
+            using Microsoft.AspNetCore.Hosting;
+            using Microsoft.AspNetCore.HttpsPolicy;
+            using Microsoft.Extensions.Configuration;
+            using Microsoft.Extensions.DependencyInjection;
+            using Microsoft.Extensions.Hosting;
+            
+            namespace Pizzeria.WebSite
+            {
+                public class Startup
+                {
+                    public Startup(IConfiguration configuration)
+                    {
+                        Configuration = configuration;
+                    }
+            
+                    public IConfiguration Configuration { get; }
+            
+                    // This method gets called by the runtime. Use this method to add services to the container.
+                    public void ConfigureServices(IServiceCollection services)
+                    {
+            
+                        services.AddControllersWithViews();
+                    }
+            
+                    // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+                    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+                    {
+                        if (env.IsDevelopment())
+                        {
+                            app.UseDeveloperExceptionPage();
+                        }
+                        else
+                        {
+                            app.UseExceptionHandler("/Error");
+                            // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                            app.UseHsts();
+                        }
+            
+                        app.UseHttpsRedirection();
+                        app.UseStaticFiles();
+                        app.UseRouting();
+            
+                        app.UseEndpoints(endpoints =>
+                        {
+                            endpoints.MapControllerRoute(
+                                name: "default",
+                                pattern: "{controller}/{action=Index}/{id?}");
+            
+                            endpoints.MapFallbackToFile("index.html");
+                        });
+                    }
+                }
+            }
+            
+        </code>
+    </pre>
+
+    <pre>
+        <code class="language-css">
+            h1 {
+                color: #ff000;
+            }
+        </code>
+    </pre>
+
+    <pre>
+        <code class="language-ts">
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html'
+})
+export class AppComponent {
+  title = 'app';
+}
+
+        </code>
+    </pre>
+
+    <a href="https://github.com/highlightjs/highlight.js/blob/main/SUPPORTED_LANGUAGES.md">Nyelvek</a>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/highlight.min.js"></script>
+    <!-- and it's easy to individually load additional languages -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/csharp.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/xml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/typescript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/css.min.js"></script>
+    <script>hljs.highlightAll();</script>
+</body>
+</html>
