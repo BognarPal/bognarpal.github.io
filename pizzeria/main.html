@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="hu">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pizzéria projekt</title>
+    <link rel="stylesheet" href="/site.css">
+</head>
+
+<body class="bg-secondary">
+    <div class="container bg-white my-3">
+        <div class="row">
+            <div class="sidebar d-md-none d-xl-block col-xl-2 pt-3">
+                <div class="position-fixed" id="sidebar">
+                </div>
+            </div>
+            <div class="col-md-12 col-xl-10 mt-3" id="content">
+       
+            </div>
+        </div>
+        <div class="footer row">
+            <div class="d-md-none d-xl-block col-xl-2">
+            </div>
+            <div class="col-md-12 col-xl-10 text-center p-2">
+                Ha bármilyen hibát talált, vagy észrevétele van, akkor kérem "dobjon" egy <i>pull request</i>et, vagy írjon bejegyzést az <a href="https://github.com/BognarPal/bognarpal.github.io/issues" target="info">issue-khoz</a>
+            </div>
+        </div>
+    </div>
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/highlight.min.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/csharp.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/xml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/typescript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/css.min.js"></script>
+    <script>
+
+        function loadContent(page) {
+            var gotoToId = '#';
+            if (page.indexOf('#') !== -1 ) {
+                gotoToId = page.substr(page.indexOf('#'), page.length);
+                page = page.substr(0, page.indexOf('#'));
+            }
+
+            var xhrContent = new XMLHttpRequest();
+            xhrContent.addEventListener('readystatechange', function () {
+                if (this.readyState === 4) {
+                    document.querySelector('#content').innerHTML = this.responseText;
+                    history.pushState(null, '', '/pizzeria/main.html?page=' + page);
+                    location.href = gotoToId;
+                }
+            });
+
+            switch (page) {
+                case 'feladatDefinicio':
+                    xhrContent.open('GET', 'feladatDefinicio.html');
+                    document.title = 'Pizzéria: feladat definiálása'
+                    break;
+                case 'projektekLetrehozasa':
+                    xhrContent.open('GET', 'projektekLetrehozasa.html');
+                    document.title = 'Pizzéria: projektek létrehozása'
+                    break;
+                
+                default:
+                    xhrContent.open('GET', 'feladatDefinicio.html');
+                    page = 'feladatDefinicio';
+                    break;
+            }                
+            xhrContent.send();
+        }
+
+        hljs.highlightAll();
+
+        var xhrSideBar = new XMLHttpRequest();
+        xhrSideBar.addEventListener('readystatechange', function () {
+            if (this.readyState === 4) {
+                document.querySelector('#sidebar').innerHTML = this.responseText;
+            }
+        });
+
+        xhrSideBar.open('GET', 'sidebar.html');
+        xhrSideBar.send();
+
+        
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const urlSearchParams = new URLSearchParams(window.location.search);
+            const params = Object.fromEntries(urlSearchParams.entries());
+            var page = params['page'];
+            if (!page) {
+                page = 'feladatDefinicio'
+            }
+            loadContent(page);           
+        });
+    </script>
+    
+</body>
+
+</html>
