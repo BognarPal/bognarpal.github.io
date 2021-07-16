@@ -65,7 +65,10 @@
                     xhrContent.open('GET', 'projektekLetrehozasa.html');
                     document.title = 'Pizzéria: projektek létrehozása'
                     break;
-                
+                case 'valasszunkIDEt':
+                    xhrContent.open('GET', 'valasszunkIDEt.html');
+                    document.title = 'Pizzéria: IDE választása'
+                    break;
                 default:
                     xhrContent.open('GET', 'feladatDefinicio.html');
                     page = 'feladatDefinicio';

@@ -17,13 +17,13 @@ p {
 }
 
 div.container {
-    min-height: 100vh;
+    min-height: calc(100vh - 4.5rem);
 }
 
 .sidebar {
     background-color: #888;
     color: #eee;
-    min-height: 100vh;
+    min-height: calc(100vh - 4.5rem);
 }
 
 .sidebar a {
