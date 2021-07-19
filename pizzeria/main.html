@@ -38,69 +38,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/xml.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/typescript.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/css.min.js"></script>
-    <script>
+    <script src="pizzeria.js"></script>
 
-        function loadContent(page) {
-            var gotoToId = '#';
-            if (page.indexOf('#') !== -1 ) {
-                gotoToId = page.substr(page.indexOf('#'), page.length);
-                page = page.substr(0, page.indexOf('#'));
-            }
-
-            var xhrContent = new XMLHttpRequest();
-            xhrContent.addEventListener('readystatechange', function () {
-                if (this.readyState === 4) {
-                    document.querySelector('#content').innerHTML = this.responseText;
-                    history.pushState(null, '', '/pizzeria/main.html?page=' + page);
-                    location.href = gotoToId;
-                }
-            });
-
-            switch (page) {
-                case 'feladatDefinicio':
-                    xhrContent.open('GET', 'feladatDefinicio.html');
-                    document.title = 'Pizzéria: feladat definiálása'
-                    break;
-                case 'projektekLetrehozasa':
-                    xhrContent.open('GET', 'projektekLetrehozasa.html');
-                    document.title = 'Pizzéria: projektek létrehozása'
-                    break;
-                case 'valasszunkIDEt':
-                    xhrContent.open('GET', 'valasszunkIDEt.html');
-                    document.title = 'Pizzéria: IDE választása'
-                    break;
-                default:
-                    xhrContent.open('GET', 'feladatDefinicio.html');
-                    page = 'feladatDefinicio';
-                    break;
-            }                
-            xhrContent.send();
-        }
-
-        hljs.highlightAll();
-
-        var xhrSideBar = new XMLHttpRequest();
-        xhrSideBar.addEventListener('readystatechange', function () {
-            if (this.readyState === 4) {
-                document.querySelector('#sidebar').innerHTML = this.responseText;
-            }
-        });
-
-        xhrSideBar.open('GET', 'sidebar.html');
-        xhrSideBar.send();
-
-        
-        document.addEventListener('DOMContentLoaded', (event) => {
-            const urlSearchParams = new URLSearchParams(window.location.search);
-            const params = Object.fromEntries(urlSearchParams.entries());
-            var page = params['page'];
-            if (!page) {
-                page = 'feladatDefinicio'
-            }
-            loadContent(page);           
-        });
-    </script>
-    
 </body>
 
 </html>

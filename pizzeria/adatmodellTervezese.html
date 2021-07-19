@@ -1,0 +1,199 @@
+<h3 id="order">Adatmodell tervezése - Rendelés</h3>
+<p>
+    Első lépésben nézzünk egy ER diagramot, ami a pizzarendelést mutatja:
+</p>
+<p class="text-center py-2">
+    <img src="ER Diagram.png" alt="ER diagram" width="720">
+</p>
+<p>
+    A tervezéshez interface-eket fogok használni. Az interface-eket a <i>pizzeria.data</i>  projektben hozom létre, az <i>interfaces</i> könyvtáron belül erre a célra létrehozott <i>models</i> mappában.
+</p>
+<p class="mb-0">Elsőként a pizzákat nézzük meg, amiben vannak <i>többértékű attribumok</i>. Vegyük ezeket sorba:</p>
+<ul class="text-justify">
+    <li>
+        <b>Cimkék</b>: ezt szerintem úgy lehetne megvalósítani, hogy egy külön táblában (relációban) rögzítjük összes cimkét (pl.: csipős, gluténmentes, stb...) és a pizzánál tárolunk egy rá vonatkozó cimkelistát.
+    </li>
+    <li>
+        <b>Fényképek</b>: eldöntendő kérdés, hogy a fényképeket hol tároljuk: az adatbázisban, vagy fáljban és az adatbázisban csak elérési utak vannak. Ez utóbbinak a megoldása szerintem egyszerűbb, ezért én nem 
+        ezt választottam, hanem a képeket adatbázisban fogom tárolni, bájt tömbként.
+    </li>
+    <li>
+        <b>Ára</b>: első körben jogosan merülhet fel a kérdés, hogy ez miért többértékű. A válasz pedig, hogy az árak időnként változnak, ezért egy <i>idősoros</i> árnyilvántartást gondoltam megvalósítani.
+    </li>
+</ul>
+<p>Az elkészült interface-k:</p>
+
+<div>
+    <ul class="nav nav-tabs" id="tabPizzaInterfaces" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="tab-elso" data-bs-toggle="tab" data-bs-target="#tabelso" type="button"  role="tab" aria-controls="tabelso" aria-selected="true">
+                IPizzaTag
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="tab-masodik" data-bs-toggle="tab" data-bs-target="#tabmasodik" type="button"  role="tab" aria-controls="tabmasodik" aria-selected="true">
+                IPizzaPrice
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="tab-harmadik" data-bs-toggle="tab" data-bs-target="#tabharmadik" type="button"  role="tab" aria-controls="tabharmadik" aria-selected="true">
+                IPizza
+            </button>
+        </li>
+    </ul>
+    <div class="tab-content" id="tabcontentPizzaInterfaces">
+        <div class="tab-pane fade show active" id="tabelso" role="tabpanel" aria-labelledby="tab-elso">
+            <pre class="mb-1"><code class="language-csharp" data-url="Jedlik_FeladatMegoldasok/b37f7be1f97fd0653ba8880428d21bec60cf6751/Fullstack/pizzarendel%C3%A9s/pizzeria.data/interfaces/models/IPizzaTag.cs" ></code></pre>
+        </div>
+        <div class="tab-pane fade" id="tabmasodik" role="tabpanel" aria-labelledby="tab-masodik">
+            <pre class="mb-1"><code class="language-csharp" data-url="Jedlik_FeladatMegoldasok/f423c19c8c0dd38e8c7443aac7c4b627a10f46e8/Fullstack/pizzarendel%C3%A9s/pizzeria.data/interfaces/models/IPizzaPrice.cs" ></code></pre>
+        </div>
+        <div class="tab-pane fade" id="tabharmadik" role="tabpanel" aria-labelledby="tab-harmadik">
+            <pre class="mb-1"><code class="language-csharp" data-url="Jedlik_FeladatMegoldasok/b37f7be1f97fd0653ba8880428d21bec60cf6751/Fullstack/pizzarendel%C3%A9s/pizzeria.data/interfaces/models/IPizza.cs" ></code></pre>
+        </div>
+    </div>
+</div>
+
+<p>Mindhárom interface-ben használtam egy-egy <i>id</i> mezőt, amit - ha szépen akarom csinálni akkor - ki kéne emelni egy újabb interface-be, így a kódok a következőképpen alakulnak:</p>
+
+<div>
+    <ul class="nav nav-tabs" id="tabPizzaInterfaces_2" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="tab-elso_2" data-bs-toggle="tab" data-bs-target="#tabelso_2" type="button"  role="tab" aria-controls="tabelso_2" aria-selected="true">
+                IEntity
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="tab-masodik_2" data-bs-toggle="tab" data-bs-target="#tabmasodik_2" type="button"  role="tab" aria-controls="tabmasodik_2" aria-selected="true">
+                IPizzaTag
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="tab-harmadik_2" data-bs-toggle="tab" data-bs-target="#tabharmadik_2" type="button"  role="tab" aria-controls="tabharmadik_2" aria-selected="true">
+                IPizzaPrice
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="tab-negyedik_2" data-bs-toggle="tab" data-bs-target="#tabnegyedik_2" type="button"  role="tab" aria-controls="tabnegyedik_2" aria-selected="true">
+                IPizza
+            </button>
+        </li>
+    </ul>
+    <div class="tab-content" id="tabcontentPizzaInterfaces_2">
+        <div class="tab-pane fade show active" id="tabelso_2" role="tabpanel" aria-labelledby="tab-elso_2">
+            <pre><code class="language-csharp" data-url="Jedlik_FeladatMegoldasok/181d6e049de8a9c7ebac4162b21226b5ae4f8405/Fullstack/pizzarendel%C3%A9s/pizzeria.data/interfaces/models/IEntity.cs" ></code></pre>
+        </div>
+        <div class="tab-pane fade" id="tabmasodik_2" role="tabpanel" aria-labelledby="tab-masodik_2">
+            <pre><code class="language-csharp" data-url="Jedlik_FeladatMegoldasok/181d6e049de8a9c7ebac4162b21226b5ae4f8405/Fullstack/pizzarendel%C3%A9s/pizzeria.data/interfaces/models/IPizzaTag.cs" ></code></pre>
+        </div>
+        <div class="tab-pane fade" id="tabharmadik_2" role="tabpanel" aria-labelledby="tab-harmadik_2">
+            <pre><code class="language-csharp" data-url="Jedlik_FeladatMegoldasok/d647ae3e7eeb0e8048f0c0ee3d0d3e8eb86476d8/Fullstack/pizzarendel%C3%A9s/pizzeria.data/interfaces/models/IPizzaPrice.cs" ></code></pre>
+        </div>
+        <div class="tab-pane fade" id="tabnegyedik_2" role="tabpanel" aria-labelledby="tab-negyedik_2">
+            <pre><code class="language-csharp" data-url="Jedlik_FeladatMegoldasok/181d6e049de8a9c7ebac4162b21226b5ae4f8405/Fullstack/pizzarendel%C3%A9s/pizzeria.data/interfaces/models/IPizza.cs" ></code></pre>
+        </div>
+    </div>
+</div>
+
+<p>Következő egyedtípus, ami a diagramon szerepel az az ügyfél. Itt is van többértékű attributum, tehát itt is két interface-t kell készíteni:</p>
+<div>
+    <ul class="nav nav-tabs" id="tabCustomerInterfaces" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="tab-elso_3" data-bs-toggle="tab" data-bs-target="#tabelso_3" type="button"  role="tab" aria-controls="tabelso_3" aria-selected="true">
+                IAddress
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="tab-masodik_3" data-bs-toggle="tab" data-bs-target="#tabmasodik_3" type="button"  role="tab" aria-controls="tabmasodik_3" aria-selected="true">
+                ICustomer
+            </button>
+        </li>
+        
+    </ul>
+    <div class="tab-content" id="tabcontentCustomerInterfaces">
+        <div class="tab-pane fade show active" id="tabelso_3" role="tabpanel" aria-labelledby="tab-elso_3">
+            <pre><code class="language-csharp" data-url="Jedlik_FeladatMegoldasok/568abea25a7d3d2423296cc9931354001ae457df/Fullstack/pizzarendel%C3%A9s/pizzeria.data/interfaces/models/IAddress.cs" ></code></pre>
+        </div>
+        <div class="tab-pane fade" id="tabmasodik_3" role="tabpanel" aria-labelledby="tab-masodik_3">
+            <pre><code class="language-csharp" data-url="Jedlik_FeladatMegoldasok/568abea25a7d3d2423296cc9931354001ae457df/Fullstack/pizzarendel%C3%A9s/pizzeria.data/interfaces/models/ICustomer.cs" ></code></pre>
+        </div>
+        
+    </div>
+</div>
+
+<p>
+    Az ügyfélhez a diagramon látható attributumokon túl felvettem még két mezőt: telefonszámt és a jelszó ellenőrzésére szolgáló hash jellemzőt.
+</p>
+<p>
+    A diagramról kiolvasható még, hogy szükség lesz egy modellre, ami a rendeléssel kapcsolatos adatokat tárolja:
+</p>
+<pre><code class="language-csharp" data-url="Jedlik_FeladatMegoldasok/9f37bdd70c53b71d6bdd88bd24c1b9537afa6930/Fullstack/pizzarendel%C3%A9s/pizzeria.data/interfaces/models/IOrder.cs" ></code></pre>
+<p>
+    Ebben a modellben is több mező szerepel, mint ami az ábrán van, de végigolvasva a mező neveket látszik, hogy a dátumok a <i>időpontok/állapot</i> cimkéjű attributumot fedik le.
+</p>
+
+<hr>  <!--  ----------------------------------------------------------  -->
+
+<h3 id="menu">Étlap módosítása</h3>
+<p> 
+    Ehhez nem készítettem ER diagramot, mert csak egy új entitás jön a képbe: a dolgozók. Ennek a modellje a következőképpen néz ki:
+</p>
+<pre><code class="language-csharp" data-url="Jedlik_FeladatMegoldasok/c1ed26ab6ec7ce10b6bed0c33f3376da1f03b385/Fullstack/pizzarendel%C3%A9s/pizzeria.data/interfaces/models/IEmployee.cs" ></code></pre>
+
+<hr>  <!--  ----------------------------------------------------------  -->
+
+<h3 id="auth">Jogosultsági rendszer</h3>
+<p>
+    A jogosultsági rendszer alapvetően két részből áll: authentikáció (hozzáférés ellenőrzése -> ki léphet be az alkalmazásba), és az authorizáció (mely funkciókhoz férhet hozzá.)
+    Az authentikáció részben lefedésre került: az alkalmazásba a dolgozók és az ügyfelek férhetnek hozzá. Mindkét modellben szerepel <i>passwordHash</i> jellemző, aminek ellenőrzésével biztosítható, a hozzáférés ellenőrzése.
+    Az authorizációhoz azonban meg kell határozni az alkalmazásban a szerepeket (pl.: ügyfél, szakács, futár, admin). A szerepek meghatározását nem kell most elvégezni, csak biztosítani kell, hogy a későbbiekben elérhető legyen.
+    <br>
+    Ezen kívül meg kell oldani, hogy az egyes felhasználókhoz - akár ügyfél, akár dolgozó - rendelt szerepek lekérdezhetők legyenek. 
+    Az ügyfelekhez várhatóan csak egy szerepet kell rendelni, a dolgozóknál azonban elképzelhető, hogy egyszerre több szereppel is rendelkeznek (pl.: ugyanaz a személy aki módosíthatja az étlapot szakácsként, vagy futárként is dolgozhat).
+    <br>
+    Mindezeken kívűl még egy szempontot érdemes figyelembe kellene venni: a bejelentkezés folyamán lehetőleg csak egy helyen ellenőrízze a program, hogy a felhasználó beléphet-e, illetve hogy mihez férjen hozzá. Ha megnézzük az ügyfelek és
+    a dolgozók modelljét látszik, hogy több közös mezőjük van, amit érdemes kihasználni. Ezeket a közös mezőket egy új modellbe az <i>IUser</i>-be szervezem ki:
+</p>
+<div>
+    <ul class="nav nav-tabs" id="tabPizzaInterfaces_4" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="tab-elso_4" data-bs-toggle="tab" data-bs-target="#tabelso_4" type="button"  role="tab" aria-controls="tabelso_4" aria-selected="true">
+                IRole
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="tab-masodik_4" data-bs-toggle="tab" data-bs-target="#tabmasodik_4" type="button"  role="tab" aria-controls="tabmasodik_4" aria-selected="true">
+                IUser
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="tab-harmadik_4" data-bs-toggle="tab" data-bs-target="#tabharmadik_4" type="button"  role="tab" aria-controls="tabharmadik_4" aria-selected="true">
+                ICustomer
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="tab-negyedik_4" data-bs-toggle="tab" data-bs-target="#tabnegyedik_4" type="button"  role="tab" aria-controls="tabnegyedik_4" aria-selected="true">
+                IEmployee
+            </button>
+        </li>
+    </ul>
+    <div class="tab-content" id="tabcontentPizzaInterfaces_4">
+        <div class="tab-pane fade show active" id="tabelso_4" role="tabpanel" aria-labelledby="tab-elso_4">
+            <pre><code class="language-csharp" data-url="Jedlik_FeladatMegoldasok/c8566ccc3b65d5e3d8ebd7978a1340c63ff68571/Fullstack/pizzarendel%C3%A9s/pizzeria.data/interfaces/models/IRole.cs" ></code></pre>
+        </div>
+        <div class="tab-pane fade" id="tabmasodik_4" role="tabpanel" aria-labelledby="tab-masodik_4">
+            <pre><code class="language-csharp" data-url="Jedlik_FeladatMegoldasok/c8566ccc3b65d5e3d8ebd7978a1340c63ff68571/Fullstack/pizzarendel%C3%A9s/pizzeria.data/interfaces/models/IUser.cs" ></code></pre>
+        </div>
+        <div class="tab-pane fade" id="tabharmadik_4" role="tabpanel" aria-labelledby="tab-harmadik_4">
+            <pre><code class="language-csharp" data-url="Jedlik_FeladatMegoldasok/c8566ccc3b65d5e3d8ebd7978a1340c63ff68571/Fullstack/pizzarendel%C3%A9s/pizzeria.data/interfaces/models/ICustomer.cs" ></code></pre>
+        </div>
+        <div class="tab-pane fade" id="tabnegyedik_4" role="tabpanel" aria-labelledby="tab-negyedik_4">
+            <pre><code class="language-csharp" data-url="Jedlik_FeladatMegoldasok/c8566ccc3b65d5e3d8ebd7978a1340c63ff68571/Fullstack/pizzarendel%C3%A9s/pizzeria.data/interfaces/models/IEmployee.cs" ></code></pre>
+        </div>
+    </div>
+</div>
+
+<p class="keretes">
+    Ebben a projektben kevés modellel dolgoztam, ezért minden modell egy mappába került a <i>pizzeria.data</i> projekten belül. Azonban nagyobb projektek esetében érdemes tovább tagolni az egyes interface-ek helyét, és
+    újabb könyvtárakat létrehozni az egyes modelleknek valamilyen logika szerint csoportosítva.
+</p>

@@ -1,1 +1,91 @@
 <h3>IDE (fejlesztői környezet) választása</h3>
+<p>
+    Linux esetében szerintem a VS Code használata tűnik logikusnak mind a backend, mint a frontend fejlesztéséhez. Windows esetében is járható út, mind a back- mind a frontend VS Code-dal történő fejlesztése. 
+    Azonban Windows esetében még játszik a Visual Studio is, hiszen a Community Edition ingyenesen használható. A tapasztalataim szerint azonban a Visual Studio-nál (legalábbis a 2019-es és korábbi verzióinál) az Angular fejlesztését
+    jobban támogatja VS Code. Emiatt én egy hibrid megoldást szoktam használni backend-et VS-sel frontend-et VS Code-dal fejlesztek. 
+    <br>
+    További probléma a Visual Studio 2019 esetében, hogy a backend kiszolgálására IIS Express az alapértelmezett, ami a frontend fejlesztése során kényelmetlen.
+    <br>
+    A fentiek miatt nálam a környezet úgy alakult (hangsúlyozom: VS 2019-el), hogy a backendet kiszolgálta az IIS Express (CTRL-F5 a Visual Studióban), a frontend-et viszont az Angular klienssel 
+    futtattam (<i>ng serve</i> paranccsal a <i>ClientApp</i> könyvtárból).
+    <br>
+    Ennek a módszernek van egy hátránya: két webszerver fog futni a gépen. Miért probléma ez? A válasz a CORS (<a href="https://en.wikipedia.org/wiki/Cross-origin_resource_sharing">Wikipedia</a>).
+</p>
+<hr>
+<h3 id="cors">CORS (Cross-origin resource sharing) engedélyezése a back-enden</h3>
+<div class="keretes bg-danger text-light">
+    <h6 class="text-justify">Ha valaki nem a fent leírt hibrid módszert használja, és már 6-os .Net Core-al hozta létre a projektet ez a lépés kihagyható.</h6>
+</div>
+
+<p>
+    Biztonsági szempontból a CORS-t véleményem szerinte csak DEBUG módban szabad engedélyezni, és akkor is csak a <i>localhost:4200</i>-as címre. Ehhez a <i>pizzeria.website</i> projektben található <i>Startup.cs</i> fájlt kell szerkeszteni.
+</p>
+<p>
+    Első lépésben a <i>ConfigureServices </i> metódus módosítása:
+</p>
+<div>
+    <ul class="nav nav-tabs" id="tabConfigureServices" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="configureServices-before" data-bs-toggle="tab" data-bs-target="#configureServicesBefore" type="button"  role="tab" aria-controls="configureServicesBefore" aria-selected="true">
+                Előtte
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="configureServices-after" data-bs-toggle="tab" data-bs-target="#configureServicesAfter" type="button"  role="tab" aria-controls="configureServicesAfter" aria-selected="true">
+                Utána
+            </button>
+        </li>
+    </ul>
+    <div class="tab-content" id="tabContentConfigureServices">
+        <div class="tab-pane fade show active" id="configureServicesBefore" role="tabpanel" aria-labelledby="configureServices-before">
+            <pre>
+                <code class="language-csharp" data-url="Jedlik_FeladatMegoldasok/bf7645bc6199c97c8ca3af1188fb3f94e1cdd9d2/Fullstack/pizzarendelés/pizzeria.website/Startup.cs", data-functionSignature="void ConfigureServices(IServiceCollection services)"></code>
+            </pre>
+        </div>
+        <div class="tab-pane fade" id="configureServicesAfter" role="tabpanel" aria-labelledby="configureServices-after">
+            <pre>
+                <code class="language-csharp" data-url="Jedlik_FeladatMegoldasok/master/Fullstack/pizzarendelés/pizzeria.website/Startup.cs", data-functionSignature="void ConfigureServices(IServiceCollection services)"></code>
+            </pre>
+        </div>
+    </div>
+</div>
+
+<p>
+    Ezt követően még a <i>Configure</i> metódusba is be kell szúrni egy sort, szintén csak DEBUG módban.
+</p>
+
+<div>
+    <ul class="nav nav-tabs" id="tabconfigure" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="configure-before" data-bs-toggle="tab" data-bs-target="#configureBefore" type="button"  role="tab" aria-controls="configureBefore" aria-selected="true">
+                Előtte
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="configure-after" data-bs-toggle="tab" data-bs-target="#configureAfter" type="button"  role="tab" aria-controls="configureAfter" aria-selected="true">
+                Utána
+            </button>
+        </li>
+    </ul>
+    <div class="tab-content" id="tabContentconfigure">
+        <div class="tab-pane fade show active" id="configureBefore" role="tabpanel" aria-labelledby="configure-before">
+            <pre>
+                <code class="language-csharp" data-url="Jedlik_FeladatMegoldasok/bf7645bc6199c97c8ca3af1188fb3f94e1cdd9d2/Fullstack/pizzarendelés/pizzeria.website/Startup.cs" data-functionSignature="void Configure(IApplicationBuilder app, IWebHostEnvironment env)"></code>
+            </pre>
+        </div>
+        <div class="tab-pane fade" id="configureAfter" role="tabpanel" aria-labelledby="configure-after">
+            <pre>
+                <code class="language-csharp" data-url="Jedlik_FeladatMegoldasok/master/Fullstack/pizzarendelés/pizzeria.website/Startup.cs" data-functionSignature="void Configure(IApplicationBuilder app, IWebHostEnvironment env)"></code>
+            </pre>
+        </div>
+    </div>
+</div>
+
+<div class="row my-3">
+    <div class="offset-1 col-5">
+        <button class="btn btn-secondary" onclick="loadContent('projektekLetrehozasa')">Előző</button>
+    </div>
+    <div class="col-5 text-end">
+        <button class="btn btn-secondary" onclick="loadContent('uzletiFolyamatokTervezese')">Tovább</button>
+    </div>
+</div>
