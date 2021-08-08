@@ -1,0 +1,31 @@
+<h3>Az első program</h3>
+<p>
+    A következő lépéséket egy Ubuntu Linux-ot futtató gépről végeztem, hogy az operációs rendszerek eltérése miatti problémákat kiiktassam. Egy terminál ablakól az <i>ssh -X pi@&lt;Raspberry IP címe&gt;</i> parancsot kiadva ismét bejelentkeztem a Raspberry-n futó OS-re.
+    Ezt követően a következő kódot hoztam létre (<i>nano main.py</i>):
+    <pre><code class="py">import cv2
+
+cap = cv2.VideoCapture(0)
+ret, frame = cap.read()
+cv2.imshow("frame", frame)
+cv2.waitKey(0)
+cv2.destroyAllWindows()</code></pre>
+</p>
+<p>
+    A kódot lefuttatva (<i>python3 main.py</i> ) úgy tűnik, hogy működik, de azért van 1 <i>warning</i> és két hiba. A warningra megoldást
+    <a href="https://askubuntu.com/questions/359753/gtk-warning-locale-not-supported-by-c-library-when-starting-apps-from-th#answer-359932" target="info">ebben</a> a cikkben találtam. A hibák megoldásában
+    <a href="https://askubuntu.com/questions/342202/failed-to-load-module-canberra-gtk-module-but-already-installed#answer-872397" target="info">ez</a> a cikk segített.
+</p>
+<div class="w-75 mx-auto text-center" style="min-width: 680px;">
+    <iframe width="672" height="378" src="https://www.youtube.com/embed/P8HxBUpYljE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
+<p class="my-3">
+    Jöhet a jogos kérdés, hogy mi a helyzet Windows-on. Ahhoz, hogy ebben a környezetben is működjön telepíteni kell egy <i>X Szerver</i>-t. Én a VxXsrv-t választottam, ami letölthető a <a href="https://sourceforge.net/projects/vcxsrv/" targetr="info">SourceForge</a>-ról.
+    A telepítése "sima" next-next-finish. Jöhet a tesztelés:
+</p>
+<div class="w-75 mx-auto text-center" style="min-width: 680px;">
+    <iframe width="672" height="378" src="https://www.youtube.com/embed/Fgdd0euIpSU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
+<p class="keretes">
+    Ahhoz, hogy ne kelljen minden egyes bejelentkezés esetén felhasználónevet és jelszót beírni érdemes megcsinálni a privát kulcsos bejelentkezést. A pontos menetéről sok cikket lehet találni egy példa: 
+    <a href="https://www.cyberciti.biz/faq/how-to-set-up-ssh-keys-on-linux-unix/" target="info">https://www.cyberciti.biz/faq/how-to-set-up-ssh-keys-on-linux-unix/</a>.
+</p>

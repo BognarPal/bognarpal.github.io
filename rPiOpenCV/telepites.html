@@ -1,0 +1,57 @@
+<h3>Raspberry Pi telepítése</h3>
+
+<p>
+    A <a href="https://www.raspberrypi.org/software/" target="info">https://www.raspberrypi.org/software/</a> oldalról letölthető az a szoftver, ami lehetővé teszi az operációs rendszer kiválasztását és SD kártyára írását.    
+    Én az alapértelmezett Raspberry Pi 32 bites OS-t választottam, ennek mérete kb.: 1.2 Gb
+</p>
+<div class="w-75 mx-auto text-center" style="min-width: 680px;">
+    <iframe width="672" height="378" src="https://www.youtube.com/embed/KiB2K4VdKPc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
+<p class="my-3">
+    A következő lépéshez - ami az OpenCV telepítése - hozzá kellene férni a Raspberry Pi-n futó operációs rendszerhez. Ennek egyik módja az is lehetne, hogy csatlakoztatok az eszközhöz monitort, billentyűzetet és esetleg egeret. 
+    Azonban ezeket a Raspberry-ket a leggyakrabban távoli hozzáféréssel kezelik, én is ezzel próbálkoznék.
+    Némi keresés után az alábbi cikket találtam: <a href="https://desertbot.io/blog/headless-raspberry-pi-4-ssh-wifi-setup" target="info">https://desertbot.io/blog/headless-raspberry-pi-4-ssh-wifi-setup</a>.
+</p>
+<div class="w-75 mx-auto text-center" style="min-width: 680px;">
+    <iframe width="672" height="378" src="https://www.youtube.com/embed/yF3qYyix6wg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
+<p class="my-3">
+    Windows-ról a csatlakozáshoz használható a <i>Putty</i> nevű program, azonban én korábban már telepítettem a WSL-t (<a href="https://docs.microsoft.com/en-us/windows/wsl/about" target="info">Info a WSL-ről</a> ) a gépemre, ezért ezt használom.
+    A következő akadály: mi a Raspberry IP címe? Több módszer létezik a legyeszerűbb a Router-en megnézni a kiosztott IP címeket, valamint még mindig opció rádugni a monitor, billenytyűzet, egér hármast.
+    <br>
+    A csatlakozáshoz érdemes tudni, hogy az alapértelmezett felhasználónév <i>pi</i>, az alapértelmezett jelszó pedig <i>raspberry</i>.
+</p>
+<div class="w-75 mx-auto text-center" style="min-width: 680px;">
+    <iframe width="672" height="378" src="https://www.youtube.com/embed/5Epu-rXSRCc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
+<p class="my-3">
+    Érdemes egy frissítéssel kezdeni:
+    <pre><code class="bash">sudo apt-get update && sudo apt-get upgrade -y && sudo rpi-update</code></pre>
+    Érdemes felkészülni arra, hogy az <i>upgrade</i> akár 15-20 percig is tarthat. A folyamat végén újra kell indítani az eszközt:
+    <pre><code class="bash">sudo reboot</code></pre>
+</p>
+<p>Eztuán ismét némi keresgélés, hogyan kellene az OpenCV-t telepíteni. Több cikket elolvasva, az alábbi lépések végrehajtása után sikerült az OpenCV-t telepíteni:
+    <pre><code class="bash">sudo apt install cmake pkg-config build-essential git -y
+sudo apt install libwebp-dev libjasper-dev libopenexr-dev libv4l-dev libavformat-dev -y
+sudo apt install libxvidcore-dev libx264-dev libdc1394-22-dev libgstreamer-plugins-base1.0-dev libgstreamer1.0-dev libavcodec-dev -y
+sudo apt install libtiff-dev libpng-dev libjpeg-dev libswscale-dev -y
+sudo apt install libhdf5-dev libhdf5-103 libatlas-base-dev -y
+sudo apt-get install libssl-dev -y
+sudo apt install libgtk-3-dev libqtwebkit4 libqt4-test libqtgui4 python3-pyqt5 -y
+sudo apt install python3-dev python3-pip python3-testresources python3-numpy -y</code></pre>
+    Az utolsó két utasítás már a python telepítőjével történik
+    <pre><code class="bash">sudo pip3 install -U numpy
+sudo pip3 install opencv-python</code></pre>
+</p>
+<p>
+    Tesztelés:
+</p>
+<div class="w-75 mx-auto text-center" style="min-width: 680px;">
+    <img src="TestingOpenCV.gif" alt="">
+</div>
+<p class="my-3">
+    Amennyiben valaki <a href="pi_20camera.jpg" target="info">Pi kamerát</a> szeretne haszálni, annak használatát engedélyezni kell:
+</p>
+<div class="w-75 mx-auto text-center" style="min-width: 680px;">
+    <img src="EnablePiCamera.gif" alt="">
+</div>
