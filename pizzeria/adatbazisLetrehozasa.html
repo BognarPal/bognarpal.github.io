@@ -67,7 +67,7 @@
     </div>
 </div>
 <p class="keretes">
-    A Visual Studio-val készült videón látható kódkiegészítést a VS 2022-höz telepített <i>Visual Studio IntelliCode</i> bővítmény végzi. További részletek: <a href="https://visualstudio.microsoft.com/services/intellicode/">https://visualstudio.microsoft.com/services/intellicode/</a>
+    A Visual Studio-val készült videón látható kódkiegészítést a VS 2022-höz telepített <i>Visual Studio IntelliCode</i> bővítmény végzi. További részletek: <a href="https://visualstudio.microsoft.com/services/intellicode/" target="info">https://visualstudio.microsoft.com/services/intellicode/</a>
 </p>
 <p>
     A modellosztályok létrehozása során belefutottam egy problémába: az <i>IUser</i> interface-ben a szerepek definiálása így nézett ki:
@@ -83,10 +83,13 @@
     <a href="https://stackoverflow.com/questions/9805329/how-to-use-interface-properties-with-codefirst" target="info">Stackoverflow</a>-n. Az alábbi videón ennek a problémának a megoldását rögzítettem.
 </p>
 <div class="w-75 mx-auto text-center" style="min-width: 680px;">
-    <iframe width="672" height="378" src="https://www.youtube.com/embed/TLJFlsM5rwo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    <iframe width="672" height="378" src="https://www.youtube.com/embed/iojo0HCZIZk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </div>
 
-<p class="mt-3">Az elkészült osztályok forráskódjai* az alábbi táblázatban találhatók. (<i>*Ezek nem a végleges kódok, később még módosulnak.</i>) </p>
+<p class="mt-3">
+    Az elkészült osztályok forráskódjai az alábbi táblázatban találhatók. (Az utolsó két osztályra azért volt szükség, mert <a href="https://youtu.be/gablAZvixfY" target="info">később kiderült</a>, hogy az Entity Framework a bájt tömböt, mint önálló típust, valamint a <i>Dictionary</i>-t 
+    nem tudja lekezelni) 
+</p>
 <div>
     <ul class="nav nav-tabs" id="tabModells_1" role="tablist">
         <li class="nav-item" role="presentation">
@@ -134,38 +137,157 @@
                 Order
             </button>
         </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="tab-tizedik" data-bs-toggle="tab" data-bs-target="#tabtizedik" type="button"  role="tab" aria-controls="tabtizedik" aria-selected="true">
+                OrderDetails
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="tab-tizenegyedik" data-bs-toggle="tab" data-bs-target="#tabtizenegyedik" type="button"  role="tab" aria-controls="tabtizenegyedik" aria-selected="true">
+                PizzaPicture
+            </button>
+        </li>
     </ul>
     <div class="tab-content" id="tabcontentModells_1">
         <div class="tab-pane fade show active" id="tabelso" role="tabpanel" aria-labelledby="tab-elso">
-            <pre class="mb-1"><code class="language-csharp" data-url="Jedlik_FeladatMegoldasok/889b6ba749089fc79ec0d3f8dac082f502ca32c0/Fullstack/pizzarendel%C3%A9s/pizzeria.service/models/Address.cs" ></code></pre>            
+            <pre class="mb-1"><code class="language-csharp" data-url="Jedlik_FeladatMegoldasok/85a527116290b333fb48660b673465659acd481e/Fullstack/pizzarendel%C3%A9s/pizzeria.service/models/Address.cs" ></code></pre>            
         </div>
         <div class="tab-pane fade" id="tabmasodik" role="tabpanel" aria-labelledby="tab-masodik">
-            <pre class="mb-1"><code class="language-csharp" data-url="Jedlik_FeladatMegoldasok/889b6ba749089fc79ec0d3f8dac082f502ca32c0/Fullstack/pizzarendel%C3%A9s/pizzeria.service/models/Role.cs" ></code></pre>
+            <pre class="mb-1"><code class="language-csharp" data-url="Jedlik_FeladatMegoldasok/85a527116290b333fb48660b673465659acd481e/Fullstack/pizzarendel%C3%A9s/pizzeria.service/models/Role.cs" ></code></pre>
         </div>
         <div class="tab-pane fade" id="tabharmadik" role="tabpanel" aria-labelledby="tab-harmadik">
-            <pre class="mb-1"><code class="language-csharp" data-url="Jedlik_FeladatMegoldasok/889b6ba749089fc79ec0d3f8dac082f502ca32c0/Fullstack/pizzarendel%C3%A9s/pizzeria.service/models/User.cs" ></code></pre>
+            <pre class="mb-1"><code class="language-csharp" data-url="Jedlik_FeladatMegoldasok/85a527116290b333fb48660b673465659acd481e/Fullstack/pizzarendel%C3%A9s/pizzeria.service/models/User.cs" ></code></pre>
         </div>
         <div class="tab-pane fade" id="tabnegyedik" role="tabpanel" aria-labelledby="tab-negyedik">
-            <pre class="mb-1"><code class="language-csharp" data-url="Jedlik_FeladatMegoldasok/889b6ba749089fc79ec0d3f8dac082f502ca32c0/Fullstack/pizzarendel%C3%A9s/pizzeria.service/models/Customer.cs" ></code></pre>
+            <pre class="mb-1"><code class="language-csharp" data-url="Jedlik_FeladatMegoldasok/85a527116290b333fb48660b673465659acd481e/Fullstack/pizzarendel%C3%A9s/pizzeria.service/models/Customer.cs" ></code></pre>
         </div>
         <div class="tab-pane fade" id="tabotodik" role="tabpanel" aria-labelledby="tab-otodik">
-            <pre class="mb-1"><code class="language-csharp" data-url="Jedlik_FeladatMegoldasok/889b6ba749089fc79ec0d3f8dac082f502ca32c0/Fullstack/pizzarendel%C3%A9s/pizzeria.service/models/Employee.cs" ></code></pre>
+            <pre class="mb-1"><code class="language-csharp" data-url="Jedlik_FeladatMegoldasok/85a527116290b333fb48660b673465659acd481e/Fullstack/pizzarendel%C3%A9s/pizzeria.service/models/Employee.cs" ></code></pre>
         </div>
         <div class="tab-pane fade" id="tabhatodik" role="tabpanel" aria-labelledby="tab-hatodik">
-            <pre class="mb-1"><code class="language-csharp" data-url="Jedlik_FeladatMegoldasok/889b6ba749089fc79ec0d3f8dac082f502ca32c0/Fullstack/pizzarendel%C3%A9s/pizzeria.service/models/PizzaTag.cs" ></code></pre>
+            <pre class="mb-1"><code class="language-csharp" data-url="Jedlik_FeladatMegoldasok/72aff39db44c23c017dae5d3d29d0899e33cd89d/Fullstack/pizzarendel%C3%A9s/pizzeria.service/models/PizzaTag.cs" ></code></pre>
         </div>
         <div class="tab-pane fade" id="tabhetedik" role="tabpanel" aria-labelledby="tab-hetedik">
-            <pre class="mb-1"><code class="language-csharp" data-url="Jedlik_FeladatMegoldasok/889b6ba749089fc79ec0d3f8dac082f502ca32c0/Fullstack/pizzarendel%C3%A9s/pizzeria.service/models/PizzaPrice.cs" ></code></pre>
+            <pre class="mb-1"><code class="language-csharp" data-url="Jedlik_FeladatMegoldasok/85a527116290b333fb48660b673465659acd481e/Fullstack/pizzarendel%C3%A9s/pizzeria.service/models/PizzaPrice.cs" ></code></pre>
         </div>
         <div class="tab-pane fade" id="tabnyolcadik" role="tabpanel" aria-labelledby="tab-nyolcadik">
-            <pre class="mb-1"><code class="language-csharp" data-url="Jedlik_FeladatMegoldasok/889b6ba749089fc79ec0d3f8dac082f502ca32c0/Fullstack/pizzarendel%C3%A9s/pizzeria.service/models/Pizza.cs" ></code></pre>
+            <pre class="mb-1"><code class="language-csharp" data-url="Jedlik_FeladatMegoldasok/85a527116290b333fb48660b673465659acd481e/Fullstack/pizzarendel%C3%A9s/pizzeria.service/models/Pizza.cs" ></code></pre>
         </div>
         <div class="tab-pane fade" id="tabkilencedik" role="tabpanel" aria-labelledby="tab-kilencedik">
-            <pre class="mb-1"><code class="language-csharp" data-url="Jedlik_FeladatMegoldasok/d9be798ad03102cb12c1b180865502c6ce81a8e9/Fullstack/pizzarendel%C3%A9s/pizzeria.service/models/Order.cs" ></code></pre>
+            <pre class="mb-1"><code class="language-csharp" data-url="Jedlik_FeladatMegoldasok/85a527116290b333fb48660b673465659acd481e/Fullstack/pizzarendel%C3%A9s/pizzeria.service/models/Order.cs" ></code></pre>
+        </div>
+        <div class="tab-pane fade" id="tabtizedik" role="tabpanel" aria-labelledby="tab-tizedik">
+            <pre class="mb-1"><code class="language-csharp" data-url="Jedlik_FeladatMegoldasok/85a527116290b333fb48660b673465659acd481e/Fullstack/pizzarendel%C3%A9s/pizzeria.service/models/OrderDetails.cs" ></code></pre>
+        </div>
+        <div class="tab-pane fade" id="tabtizenegyedik" role="tabpanel" aria-labelledby="tab-tizenegyedik">
+            <pre class="mb-1"><code class="language-csharp" data-url="Jedlik_FeladatMegoldasok/85a527116290b333fb48660b673465659acd481e/Fullstack/pizzarendel%C3%A9s/pizzeria.service/models/PizzaPicture.cs" ></code></pre>
         </div>
     </div>
 </div>
 
 <hr>
 <h3 id="ef">Entity Framework</h3>
-<p></p>
+<p>
+    A MySql adatbázis létrehozásához Entity Framework-ot használok, amihez szükség van néhány <i>Nuget package</i> telepítésére. Ezeket csomagokat a <i>pizzeria.service</i> projekthez adom hozzá. 
+    A Nuget csomagokon kívül létre kell hozni egy a <i>DbContext</i> osztályból származó saját osztályt, ami tulajdonképpen az adatbázist fogja reprezentálni a programban.
+</p>
+<div class="w-75 mx-auto text-center" style="min-width: 680px;">
+    <ul class="nav nav-tabs" id="myTab5" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="add-nuget-windows" data-bs-toggle="tab" data-bs-target="#addNugetWindows" type="button"  role="tab" aria-controls="addNugetWindows" aria-selected="true">
+                DbContext létrehozása - Visual Studio (Windows)
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="add-nuget-linux" data-bs-toggle="tab" data-bs-target="#addNugetLinux" type="button"  role="tab" aria-controls="addNugetLinux" aria-selected="true">
+                DbContext létrehozása - Visual Studio Code
+            </button>
+        </li>
+    </ul>
+    <div class="tab-content" id="myTabContent2">
+        <div class="tab-pane fade show active" id="addNugetWindows" role="tabpanel" aria-labelledby="add-nuget-windows">
+            <iframe width="672" height="378" src="https://www.youtube.com/embed/XWPF2uH6cT0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        <div class="tab-pane fade" id="addNugetLinux" role="tabpanel" aria-labelledby="add-nuget-linux">
+            <!-- <iframe width="672" height="378" src="https://www.youtube.com/embed/dpyQRVrntxA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->
+            <div class="text-center">
+                <img src="/img/under-construction.gif" alt="" height="378">
+            </div>
+        </div>
+    </div>
+</div>
+<p>
+    A következő lépés az adatbázis tényleges létrehozása:
+</p>
+<div class="w-75 mx-auto text-center" style="min-width: 680px;">
+    <ul class="nav nav-tabs" id="myTab5" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="create-db-windows" data-bs-toggle="tab" data-bs-target="#createDbWindows" type="button"  role="tab" aria-controls="createDbWindows" aria-selected="true">
+                DbContext létrehozása - Visual Studio (Windows)
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="create-db-linux" data-bs-toggle="tab" data-bs-target="#createDbLinux" type="button"  role="tab" aria-controls="createDbLinux" aria-selected="true">
+                DbContext létrehozása - Visual Studio Code
+            </button>
+        </li>
+    </ul>
+    <div class="tab-content" id="myTabContent2">
+        <div class="tab-pane fade show active" id="createDbWindows" role="tabpanel" aria-labelledby="create-db-windows">
+            <iframe width="672" height="378" src="https://www.youtube.com/embed/lkKVkXSHHuM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        <div class="tab-pane fade" id="createDbLinux" role="tabpanel" aria-labelledby="create-db-linux">
+            <!-- <iframe width="672" height="378" src="https://www.youtube.com/embed/dpyQRVrntxA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->
+            <div class="text-center">
+                <img src="/img/under-construction.gif" alt="" height="378">
+            </div>
+        </div>
+    </div>
+</div>
+<p>
+    Nézzük meg közelebbről az így létrejött adatbázist:
+</p>
+<p class="text-center py-2">
+    <img src="DBDiagram_1.png" alt="Db diagram hibás" width="720">
+</p>
+<P>
+    Van vele egy kis gond: egy pizzához csak <i>tag</i>-et lehet rendelni, azaz a két tábla közötti kapcsolat jelenleg 1:N, miközben N:M kapcsolatra lenne szükség. 
+    Ennek a megoldása viszonylag egyszerű: szükség van egy újabb jellemzőre a <i>PizzaTag</i> osztályban: <i>Pizzas</i>.
+</P>
+<div class="w-75 mx-auto">
+    <pre class="mb-1"><code class="language-csharp" data-url="Jedlik_FeladatMegoldasok/4a617e19df49f219e930ea651e53b50beeae279e/Fullstack/pizzarendel%C3%A9s/pizzeria.service/models/PizzaTag.cs" ></code></pre>
+</div>
+<p>
+    A javítás és az adatbázis ismételt létrehozása videón:
+</p>
+<div class="w-75 mx-auto text-center" style="min-width: 680px;">
+    <ul class="nav nav-tabs" id="myTab5" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="create-db-windows2" data-bs-toggle="tab" data-bs-target="#createDbWindows2" type="button"  role="tab" aria-controls="createDbWindows2" aria-selected="true">
+                Pizza-Tag N:M kapcsolat - Visual Studio (Windows)
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="create-db-linux2" data-bs-toggle="tab" data-bs-target="#createDbLinux2" type="button"  role="tab" aria-controls="createDbLinux2" aria-selected="true">
+                Pizza-Tag N:M kapcsolat - Visual Studio Code
+            </button>
+        </li>
+    </ul>
+    <div class="tab-content" id="myTabContent2">
+        <div class="tab-pane fade show active" id="createDbWindows2" role="tabpanel" aria-labelledby="create-db-windows2">
+            <iframe width="672" height="378" src="https://www.youtube.com/embed/37XlMp2AgiQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        <div class="tab-pane fade" id="createDbLinux2" role="tabpanel" aria-labelledby="create-db-linux2">
+            <!-- <iframe width="672" height="378" src="https://www.youtube.com/embed/dpyQRVrntxA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->
+            <div class="text-center">
+                <img src="/img/under-construction.gif" alt="" height="378">
+            </div>
+        </div>
+    </div>
+</div>
+<p class="mt-2">
+    A kész(nek tűnő) adatbázisról egy diagram:
+</p>
+<p class="text-center py-2">
+    <img src="DBDiagram_2.png" alt="Db diagram kész" width="720">
+</p>
