@@ -1,0 +1,171 @@
+<h3 id="service">Pizzeria.Service projekt</h3>
+<p>
+    Az eddigiek során talán nem derült ki mi a szerepe a <i>pizzeria.service</i> projektnek. Ez most fog szerepet kapni: az adatbázis műveletek végrehajtásáért lesz felelős. Joggal merülhet fel a kérdés, hogy miért nem a <i>pizzeria.data</i> projektbe került
+    ez a funkció. Azért nem, mert ennek a funkciónak egy külön projektbe történő kiszervezésével lehetőség nyílik különböző adatbázisokhoz történő csatlakozás. Ebben a projektben az adatbázis MySql (pontosabban MariaDb) lesz, azonban ha valamilyen oknál fogva
+    egy NoSql adatbázist kellene csatolni, akkor elég lesz csak a szerviz projektet módosítani, vagy kicserélni.
+</p>
+<p>
+    A Létrehozáskor három különálló projekt készült el, a további lépések előtt meg kell határozni ezek között a függőségi viszonyokat. A <i>pizzeria.service</i> projektnek el kell érnie a <i>pizzeria.data</i> projekt elemeit, míg a <i>pizzeria.website</i>-nak 
+    mindkét másik projektben definiált osztályokkal, interface-ekkel dolgoznia kell majd.
+</p>
+<div class="w-75 mx-auto text-center" style="min-width: 680px;">
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="create-references-windows" data-bs-toggle="tab" data-bs-target="#createReferencesWindows" type="button"  role="tab" aria-controls="createReferencesWindows" aria-selected="true">
+                Referenciák beállítása - Visual Studio (Windows)
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="create-references-linux" data-bs-toggle="tab" data-bs-target="#createReferencesLinux" type="button"  role="tab" aria-controls="createReferencesLinux" aria-selected="true">
+                Referenciák beállítása - .Net Cli (Windows, Linux)
+            </button>
+        </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="createReferencesWindows" role="tabpanel" aria-labelledby="create-references-windows">
+            <iframe width="672" height="378" src="https://www.youtube.com/embed/5jT85RpcZSg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        <div class="tab-pane fade" id="createReferencesLinux" role="tabpanel" aria-labelledby="create-references-linux">
+            <iframe width="672" height="378" src="https://www.youtube.com/embed/dpyQRVrntxA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+    </div>
+</div>
+
+<hr>
+
+<h3 id="modellosztalyok">Modellosztályok létrehozása</h3>
+<p>
+    A modellosztályok létrehozása a <i>pizzeria.data</i> projektben elkészített interface-ek alapján törénik. Az így létrehozott osztályok segítségével fogja az Entity Framework az adatbázist létrehozni. Ezt a módszert szokás <i>Code first</i>-nek hívni,
+    hiszen egy programkód alapján fog az adatbázis létrejönni. <b>Ez azonban nem jelenti azt, hogy az adatbáziskezeléssel kapcsolatos ismeretekre ezután nem lesz szükség.</b>
+</p>
+<p>
+    Az alábbi videóban az <i>Address</i> modellosztály létrehozása látható, a többi osztály létrehozása is hasonlóképpen történik.
+</p>
+<div class="w-75 mx-auto text-center" style="min-width: 680px;">
+    <ul class="nav nav-tabs" id="myTab2" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="add-modell-windows" data-bs-toggle="tab" data-bs-target="#addModellWindows" type="button"  role="tab" aria-controls="addModellWindows" aria-selected="true">
+                Modellosztály létrehozása - Visual Studio (Windows)
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="add-modell-linux" data-bs-toggle="tab" data-bs-target="#addModellLinux" type="button"  role="tab" aria-controls="addModellLinux" aria-selected="true">
+                Modellosztály létrehozása - Visual Studio Code
+            </button>
+        </li>
+    </ul>
+    <div class="tab-content" id="myTabContent2">
+        <div class="tab-pane fade show active" id="addModellWindows" role="tabpanel" aria-labelledby="add-modell-windows">
+            <iframe width="672" height="378" src="https://www.youtube.com/embed/DVxaobsJHzM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        <div class="tab-pane fade" id="addModellLinux" role="tabpanel" aria-labelledby="add-modell-linux">
+            <!-- <iframe width="672" height="378" src="https://www.youtube.com/embed/dpyQRVrntxA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->
+            <div class="text-center">
+                <img src="/img/under-construction.gif" alt="" height="378">
+            </div>
+        </div>
+    </div>
+</div>
+<p class="keretes">
+    A Visual Studio-val készült videón látható kódkiegészítést a VS 2022-höz telepített <i>Visual Studio IntelliCode</i> bővítmény végzi. További részletek: <a href="https://visualstudio.microsoft.com/services/intellicode/">https://visualstudio.microsoft.com/services/intellicode/</a>
+</p>
+<p>
+    A modellosztályok létrehozása során belefutottam egy problémába: az <i>IUser</i> interface-ben a szerepek definiálása így nézett ki:
+</p>
+<pre class="mb-1"><code class="language-csharp">public interface IUser : IEntity
+    {
+        ...
+        IEnumerable<IRole> Roles { get; set; }
+    }</code></pre>            
+<p class="mt-3">
+    Abban az esetben, ha a modellosztályban módosítottam a <i>Roles</i> jellemző típusát <i>IEnumerable&lt;IRole&gt;</i>-ról <i>IEnumerable&lt;Role&gt;</i>-ra, akkor jött a hibaüzenet, hogy így az osztály már nem illeszkedik az interface-re.
+    Ilyenkor jön a "legjobb barátom" (a Google keresője) és a programozási kérdéskben a leggyakrabban segítséggel szolgáló oldalon találtam megoldást a: 
+    <a href="https://stackoverflow.com/questions/9805329/how-to-use-interface-properties-with-codefirst" target="info">Stackoverflow</a>-n. Az alábbi videón ennek a problémának a megoldását rögzítettem.
+</p>
+<div class="w-75 mx-auto text-center" style="min-width: 680px;">
+    <iframe width="672" height="378" src="https://www.youtube.com/embed/TLJFlsM5rwo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
+
+<p class="mt-3">Az elkészült osztályok forráskódjai* az alábbi táblázatban találhatók. (<i>*Ezek nem a végleges kódok, később még módosulnak.</i>) </p>
+<div>
+    <ul class="nav nav-tabs" id="tabModells_1" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="tab-elso" data-bs-toggle="tab" data-bs-target="#tabelso" type="button"  role="tab" aria-controls="tabelso" aria-selected="true">
+                Address
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="tab-masodik" data-bs-toggle="tab" data-bs-target="#tabmasodik" type="button"  role="tab" aria-controls="tabmasodik" aria-selected="true">
+                Role
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="tab-harmadik" data-bs-toggle="tab" data-bs-target="#tabharmadik" type="button"  role="tab" aria-controls="tabharmadik" aria-selected="true">
+                User
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="tab-negyedik" data-bs-toggle="tab" data-bs-target="#tabnegyedik" type="button"  role="tab" aria-controls="tabnegyedik" aria-selected="true">
+                Customer
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="tab-otodik" data-bs-toggle="tab" data-bs-target="#tabotodik" type="button"  role="tab" aria-controls="tabotodik" aria-selected="true">
+                Employee
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="tab-hatodik" data-bs-toggle="tab" data-bs-target="#tabhatodik" type="button"  role="tab" aria-controls="tabhatodik" aria-selected="true">
+                PizzaTag
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="tab-hetedik" data-bs-toggle="tab" data-bs-target="#tabhetedik" type="button"  role="tab" aria-controls="tabhetedik" aria-selected="true">
+                PizzaPrice
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="tab-nyolcadik" data-bs-toggle="tab" data-bs-target="#tabnyolcadik" type="button"  role="tab" aria-controls="tabnyolcadik" aria-selected="true">
+                Pizza
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="tab-kilencedik" data-bs-toggle="tab" data-bs-target="#tabkilencedik" type="button"  role="tab" aria-controls="tabkilencedik" aria-selected="true">
+                Order
+            </button>
+        </li>
+    </ul>
+    <div class="tab-content" id="tabcontentModells_1">
+        <div class="tab-pane fade show active" id="tabelso" role="tabpanel" aria-labelledby="tab-elso">
+            <pre class="mb-1"><code class="language-csharp" data-url="Jedlik_FeladatMegoldasok/889b6ba749089fc79ec0d3f8dac082f502ca32c0/Fullstack/pizzarendel%C3%A9s/pizzeria.service/models/Address.cs" ></code></pre>            
+        </div>
+        <div class="tab-pane fade" id="tabmasodik" role="tabpanel" aria-labelledby="tab-masodik">
+            <pre class="mb-1"><code class="language-csharp" data-url="Jedlik_FeladatMegoldasok/889b6ba749089fc79ec0d3f8dac082f502ca32c0/Fullstack/pizzarendel%C3%A9s/pizzeria.service/models/Role.cs" ></code></pre>
+        </div>
+        <div class="tab-pane fade" id="tabharmadik" role="tabpanel" aria-labelledby="tab-harmadik">
+            <pre class="mb-1"><code class="language-csharp" data-url="Jedlik_FeladatMegoldasok/889b6ba749089fc79ec0d3f8dac082f502ca32c0/Fullstack/pizzarendel%C3%A9s/pizzeria.service/models/User.cs" ></code></pre>
+        </div>
+        <div class="tab-pane fade" id="tabnegyedik" role="tabpanel" aria-labelledby="tab-negyedik">
+            <pre class="mb-1"><code class="language-csharp" data-url="Jedlik_FeladatMegoldasok/889b6ba749089fc79ec0d3f8dac082f502ca32c0/Fullstack/pizzarendel%C3%A9s/pizzeria.service/models/Customer.cs" ></code></pre>
+        </div>
+        <div class="tab-pane fade" id="tabotodik" role="tabpanel" aria-labelledby="tab-otodik">
+            <pre class="mb-1"><code class="language-csharp" data-url="Jedlik_FeladatMegoldasok/889b6ba749089fc79ec0d3f8dac082f502ca32c0/Fullstack/pizzarendel%C3%A9s/pizzeria.service/models/Employee.cs" ></code></pre>
+        </div>
+        <div class="tab-pane fade" id="tabhatodik" role="tabpanel" aria-labelledby="tab-hatodik">
+            <pre class="mb-1"><code class="language-csharp" data-url="Jedlik_FeladatMegoldasok/889b6ba749089fc79ec0d3f8dac082f502ca32c0/Fullstack/pizzarendel%C3%A9s/pizzeria.service/models/PizzaTag.cs" ></code></pre>
+        </div>
+        <div class="tab-pane fade" id="tabhetedik" role="tabpanel" aria-labelledby="tab-hetedik">
+            <pre class="mb-1"><code class="language-csharp" data-url="Jedlik_FeladatMegoldasok/889b6ba749089fc79ec0d3f8dac082f502ca32c0/Fullstack/pizzarendel%C3%A9s/pizzeria.service/models/PizzaPrice.cs" ></code></pre>
+        </div>
+        <div class="tab-pane fade" id="tabnyolcadik" role="tabpanel" aria-labelledby="tab-nyolcadik">
+            <pre class="mb-1"><code class="language-csharp" data-url="Jedlik_FeladatMegoldasok/889b6ba749089fc79ec0d3f8dac082f502ca32c0/Fullstack/pizzarendel%C3%A9s/pizzeria.service/models/Pizza.cs" ></code></pre>
+        </div>
+        <div class="tab-pane fade" id="tabkilencedik" role="tabpanel" aria-labelledby="tab-kilencedik">
+            <pre class="mb-1"><code class="language-csharp" data-url="Jedlik_FeladatMegoldasok/d9be798ad03102cb12c1b180865502c6ce81a8e9/Fullstack/pizzarendel%C3%A9s/pizzeria.service/models/Order.cs" ></code></pre>
+        </div>
+    </div>
+</div>
+
+<hr>
+<h3 id="ef">Entity Framework</h3>
+<p></p>

@@ -42,51 +42,71 @@ function loadContent(page) {
         page = page.substr(0, page.indexOf('#'));
     }
 
-    sourceCodeCount = 0;
+    var rootMenuElement = document.querySelector('#sidebar p[data-page="' + page + '"]');
+    if (!rootMenuElement) {
+        page = 'feladatDefinicio';
+        loadContent(page);
+        return;
+    }
+    document.title = 'Pizzéria: ' + rootMenuElement.attributes['data-title'].value;
+
+    document.querySelectorAll('div#sidebar p[class~="small"]').forEach(element => {
+        if (element.attributes['data-page'].value.indexOf(page) === -1) {
+            element.style.display = 'none';
+        } else {
+            element.style.display = null;
+        }
+    });
+
+    var selectedMenuElement = rootMenuElement;
+    if (gotoToId !='#') {
+        selectedMenuElement = document.querySelector('#sidebar p[data-page="' + page + gotoToId + '"]')
+        if (!selectedMenuElement) {
+            selectedMenuElement = rootMenuElement;
+            gotoToId = '#';
+        }
+    }
+    document.querySelectorAll('#sidebar p[data-page]').forEach( element => {
+        element.style.fontWeight = "normal";
+        element.style.color = "#eee";
+    });
+    selectedMenuElement.style.fontWeight = "bold";
+    selectedMenuElement.style.color = "#6ee";
+
+    history.pushState(null, '', '/pizzeria/main.html?page=' + page);
+
+    if (selectedMenuElement.attributes['data-newPage']) {
+        page = gotoToId.substring(1);
+    }
+
     var xhrContent = new XMLHttpRequest();
     xhrContent.addEventListener('readystatechange', function () {
         if (this.readyState === 4) {
-            document.querySelector('#content').innerHTML = this.responseText;
-            hljs.highlightAll();            
-            history.pushState(null, '', '/pizzeria/main.html?page=' + page);
-            location.href = gotoToId;
+            if (this.status === 404) {
+                document.querySelector('#content').innerHTML = `
+                    <h3>${selectedMenuElement.attributes['data-title'].value}</h3>
+                    <div class="text-center mt-5">
+                        <img src="/img/under-construction.gif">
+                    </div>
+                `;
+                location.href = gotoToId;
+            } else {
+                document.querySelector('#content').innerHTML = this.responseText;
+                hljs.highlightAll();            
+                location.href = gotoToId;
 
-            document.querySelectorAll('pre code[data-url]').forEach( element => {
-                sourceCodeCount++;
-                if (element.attributes['data-functionSignature']) {
-                    loadSourceCode(element, element.attributes['data-url'].value, element.attributes['data-functionSignature'].value)
-                } else {
-                    loadSourceCode(element, element.attributes['data-url'].value)
-                }
-            });
-            
-            var menuElement = document.querySelector('#sidebar p[data-page="' + page + '"]');
-            if (gotoToId !='#') {
-                menuElement = document.querySelector('#sidebar p[data-page="' + page + gotoToId + '"]')
+                document.querySelectorAll('pre code[data-url]').forEach( element => {
+                    if (element.attributes['data-functionSignature']) {
+                        loadSourceCode(element, element.attributes['data-url'].value, element.attributes['data-functionSignature'].value)
+                    } else {
+                        loadSourceCode(element, element.attributes['data-url'].value)
+                    }
+                });
             }
-            document.querySelectorAll('#sidebar p[data-page]').forEach( element => {
-                element.style.fontWeight = "normal";
-                element.style.color = "#eee";
-            });
-            menuElement.style.fontWeight = "bold";
-            menuElement.style.color = "#6ee";
-
-            document.querySelectorAll('div#sidebar p[class~="small"]').forEach(element => {
-                if (element.attributes['data-page'].value.indexOf(page) === -1) {
-                    element.style.display = 'none';
-                } else {
-                    element.style.display = null;
-                }
-            });
+            
         }
     });    
 
-    var selectedMenuElement = document.querySelector('#sidebar p[data-page='+page+']');
-    if (!selectedMenuElement) {
-        page = 'feladatDefinicio';
-        selectedMenuElement = document.querySelector('#sidebar p[data-page='+page+']');
-    }
-    document.title = 'Pizzéria: ' + selectedMenuElement.attributes['data-title'].value;
     xhrContent.open('GET', page + '.html');
     xhrContent.send();
 }        
@@ -103,7 +123,7 @@ xhrSideBar.addEventListener('readystatechange', function () {
             page = 'feladatDefinicio'
         }    
     
-        loadContent(page);           
+        loadContent(page + window.location.hash);           
         
         document.getElementById('sidebar').addEventListener('click', (event) => {
             loadContent(event.target.attributes['data-page'].value);
