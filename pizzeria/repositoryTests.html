@@ -1,0 +1,188 @@
+<h3 id="pizzaTagRepository">PizzaTagRepository</h3>
+<p>
+    Ehhez a repository-hoz nem készült külön interface, hiszen minden művelete illeszkedik az <i>IGenericRepositry</i> interface-re, azaz tulajdonképpen ennek a repository-nak a 
+    tesztjei a <i>GenericRepository</i> tesztjei lesznek.
+</p>
+<p>
+    Az osztály már a projekt létrehozásakor elkészült (a projekttel együtt létrehött <i>UnitTest1</i> osztályt neveztem át), most a feladat az első teszt elkészítése. 
+</p>
+<p class="keretes">
+    A tesztek elkészítése során az ún. AAA (Arrange, Act, Assert) mintát fogom használni. <a href="https://medium.com/@pjbgf/title-testing-code-ocd-and-the-aaa-pattern-df453975ab80" target="info">Egy cikk a mintáról.</a>
+</p>
+
+<div class="w-75 mx-auto text-center" style="min-width: 680px; clear: both;">
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="create-1strepo-windows" data-bs-toggle="tab" data-bs-target="#create1stRepoWindows" type="button"  role="tab" aria-controls="create1stRepoWindows" aria-selected="true">
+                PizzaTagRepository osztály - VS (Windows)
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="create-1strepo-linux" data-bs-toggle="tab" data-bs-target="#create1stRepoLinux" type="button"  role="tab" aria-controls="create1stRepoLinux" aria-selected="true">
+                PizzaTagRepository osztály - VS Code
+            </button>
+        </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="create1stRepoWindows" role="tabpanel" aria-labelledby="create-1strepo-windows">
+            <iframe width="672" height="378" src="https://www.youtube.com/embed/2v6Z1CWcJzA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        <div class="tab-pane fade" id="create1stRepoLinux" role="tabpanel" aria-labelledby="create-1strepo-linux">
+            <!-- <iframe width="672" height="378" src="https://www.youtube.com/embed/dpyQRVrntxA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->
+            <div class="text-center">
+                <img src="/img/under-construction.gif" alt="" height="378">
+            </div>
+        </div>
+    </div>
+</div>
+<p>
+    A videóban látszik, hogy tényleges kódot tulajdonképpen nem írtam, csak az osztályok létrehozása történt meg. Az eredmény ezen a ponton:
+</p>
+<div>
+    <ul class="nav nav-tabs" id="myTab_2" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="tab-elso" data-bs-toggle="tab" data-bs-target="#tabelso" type="button"  role="tab" aria-controls="tabelso" aria-selected="true">
+                PizzaTagRepositoryTests
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="tab-masodik" data-bs-toggle="tab" data-bs-target="#tabmasodik" type="button"  role="tab" aria-controls="tabmasodik" aria-selected="true">
+                GenericRepository
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="tab-harmadik" data-bs-toggle="tab" data-bs-target="#tabharmadik" type="button"  role="tab" aria-controls="tabharmadik" aria-selected="true">
+                PizzaTagRepository
+            </button>
+        </li>
+    </ul>
+    <div class="tab-content" id="myTabContent_2">
+        <div class="tab-pane fade show active overflow-auto" style="max-height: 620px;" id="tabelso" role="tabpanel" aria-labelledby="tab-elso">
+            <pre class="mb-1"><code class="language-csharp" data-url="Jedlik_FeladatMegoldasok/4ae240a7e8c475e026845d4b74b3cc2b504680c4/Fullstack/pizzarendel%C3%A9s/pizzeria.service.tests/PizzaTagRepositoryTests.cs" ></code></pre>
+        </div>
+        <div class="tab-pane fade overflow-auto" style="max-height: 620px;" id="tabmasodik" role="tabpanel" aria-labelledby="tab-masodik">
+            <pre class="mb-1"><code class="language-csharp" data-url="Jedlik_FeladatMegoldasok/4ae240a7e8c475e026845d4b74b3cc2b504680c4/Fullstack/pizzarendel%C3%A9s/pizzeria.service/repositories/GenericRepository.cs" ></code></pre>
+        </div>
+        <div class="tab-pane fade overflow-auto" style="max-height: 620px;" id="tabharmadik" role="tabpanel" aria-labelledby="tab-harmadik">
+            <pre class="mb-1"><code class="language-csharp" data-url="Jedlik_FeladatMegoldasok/4ae240a7e8c475e026845d4b74b3cc2b504680c4/Fullstack/pizzarendel%C3%A9s/pizzeria.service/repositories/PizzaTagRepository.cs" ></code></pre>
+        </div>
+    </div>
+</div>
+<p>
+    A kódot elemezve látszik, hogy egy apró módosításra szükség lesz a <i>GenericRepository</i> metódusainak implementálása előtt: 
+    a <i>GenericRepository</i>-nak is létre kellene hozni egy konstruktort, ami <i>DbContext</i>-et vár paraméterként. A módosítás után az eredmény:
+</p>
+<div>
+    <ul class="nav nav-tabs" id="myTab_3" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="tab-elso_2" data-bs-toggle="tab" data-bs-target="#tabelso_2" type="button"  role="tab" aria-controls="tabelso_2" aria-selected="true">
+                PizzaTagRepository
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="tab-masodik_2" data-bs-toggle="tab" data-bs-target="#tabmasodik_2" type="button"  role="tab" aria-controls="tabmasodik_2" aria-selected="true">
+                GenericRepository
+            </button>
+        </li>
+    </ul>
+    <div class="tab-content" id="myTabContent_3">
+        <div class="tab-pane fade show active overflow-auto" style="max-height: 620px;" id="tabelso_2" role="tabpanel" aria-labelledby="tab-elso_2">
+            <pre class="mb-1"><code class="language-csharp" data-url="Jedlik_FeladatMegoldasok/e68bd88e66e6301564d93cc8701061729612ffc0/Fullstack/pizzarendel%C3%A9s/pizzeria.service/repositories/PizzaTagRepository.cs" ></code></pre>
+        </div>
+        <div class="tab-pane fade overflow-auto" style="max-height: 620px;" id="tabmasodik_2" role="tabpanel" aria-labelledby="tab-masodik_2">
+            <pre class="mb-1"><code class="language-csharp" data-url="Jedlik_FeladatMegoldasok/e68bd88e66e6301564d93cc8701061729612ffc0/Fullstack/pizzarendel%C3%A9s/pizzeria.service/repositories/GenericRepository.cs" ></code></pre>
+        </div>
+    </div>
+</div>
+<p>
+    A következő feladatok, a <i>GenericRepository</i>-ban lévő metódusok implementálása, és a hozzájuk tartozó tesztek elkészítése a <i>PizzaTagRepository</i> osztályon keresztül. Ennek eredménye:
+</p>
+<div>
+    <ul class="nav nav-tabs" id="myTab_4" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="tab-elso_4" data-bs-toggle="tab" data-bs-target="#tabelso_4" type="button"  role="tab" aria-controls="tabelso_4" aria-selected="true">
+                GenericRepository
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="tab-masodik_4" data-bs-toggle="tab" data-bs-target="#tabmasodik_4" type="button"  role="tab" aria-controls="tabmasodik_4" aria-selected="true">
+                PizzaTagRepositoryTests
+            </button>
+        </li>
+    </ul>
+    <div class="tab-content" id="myTabContent_4">
+        <div class="tab-pane fade show active overflow-auto" style="max-height: 620px;" id="tabelso_4" role="tabpanel" aria-labelledby="tab-elso_4">
+            <pre class="mb-1"><code class="language-csharp" data-url="Jedlik_FeladatMegoldasok/7255569411a799de5a1926a93e6c96d57b2609d1/Fullstack/pizzarendel%C3%A9s/pizzeria.service/repositories/GenericRepository.cs" ></code></pre>
+        </div>
+        <div class="tab-pane fade overflow-auto" style="max-height: 620px;" id="tabmasodik_4" role="tabpanel" aria-labelledby="tab-masodik_4">
+            <pre class="mb-1"><code class="language-csharp" data-url="Jedlik_FeladatMegoldasok/7255569411a799de5a1926a93e6c96d57b2609d1/Fullstack/pizzarendel%C3%A9s/pizzeria.service.tests/PizzaTagRepositoryTests.cs" ></code></pre>
+        </div>
+    </div>
+</div>
+<hr>
+<h3 id="pizzaRepository">PizzaRepository</h3>
+<p>
+    Nem ez a legegyszerűbb repository, de valamikor meg kell csinálni ezt is. Az alábbi videó a teszt osztály, a repository osztály létrehozását, valamint a Id alapján törénő pizza lekérést végző függvény létrehozását tartalmazza.
+    <br>
+    A fentiek elkészítése során a <i>GenericRepository</i>-hoz is hozzá kellett nyúlni: a dbContext változó láthatósága <i>protected</i> lett, valamint amiatt, mert "override-olni" kellett a <i>GetById</i> metódust, ezért azt 
+    <i>virtual</i>-lá kellett tenni.
+    <br>
+    Ennek a fejlesztének a commit-jával együtt javítottam néhány elírást is az interface-ekben.
+</p>
+<p>
+    A videó:
+</p>
+<div class="w-75 mx-auto text-center" style="min-width: 680px; clear: both;">
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="create-2ndrepo-windows" data-bs-toggle="tab" data-bs-target="#create2ndRepoWindows" type="button"  role="tab" aria-controls="create2ndRepoWindows" aria-selected="true">
+                PizzaRepository osztály - VS (Windows)
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="create-2ndrepo-linux" data-bs-toggle="tab" data-bs-target="#create2ndRepoLinux" type="button"  role="tab" aria-controls="create2ndRepoLinux" aria-selected="true">
+                PizzaRepository osztály - VS Code
+            </button>
+        </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="create2ndRepoWindows" role="tabpanel" aria-labelledby="create-2ndrepo-windows">
+            <iframe width="672" height="378" src="https://www.youtube.com/embed/w0dFYo6hcb8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        <div class="tab-pane fade" id="create2ndRepoLinux" role="tabpanel" aria-labelledby="create-2ndrepo-linux">
+            <!-- <iframe width="672" height="378" src="https://www.youtube.com/embed/dpyQRVrntxA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->
+            <div class="text-center">
+                <img src="/img/under-construction.gif" alt="" height="378">
+            </div>
+        </div>
+    </div>
+</div>
+<p>
+    A felvételen látszik, hogy erősen meg van vágva: belefutottam néhány problémába. Nézzük a két osztály forráskódját:
+</p>
+<div>
+    <ul class="nav nav-tabs" id="myTab_5" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="tab-elso_5" data-bs-toggle="tab" data-bs-target="#tabelso_5" type="button"  role="tab" aria-controls="tabelso_5" aria-selected="true">
+                PizzaRepository
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="tab-masodik_5" data-bs-toggle="tab" data-bs-target="#tabmasodik_5" type="button"  role="tab" aria-controls="tabmasodik_5" aria-selected="true">
+                PizzaRepositoryTests
+            </button>
+        </li>
+    </ul>
+    <div class="tab-content" id="myTabContent_5">
+        <div class="tab-pane fade show active overflow-auto" style="max-height: 620px;" id="tabelso_5" role="tabpanel" aria-labelledby="tab-elso_5">
+            <pre class="mb-1"><code class="language-csharp" data-url="Jedlik_FeladatMegoldasok/05d57d4db444344395b6eaa4af931b430e9253b3/Fullstack/pizzarendel%C3%A9s/pizzeria.service/repositories/PizzaRepository.cs" ></code></pre>
+        </div>
+        <div class="tab-pane fade overflow-auto" style="max-height: 620px;" id="tabmasodik_5" role="tabpanel" aria-labelledby="tab-masodik_5">
+            <pre class="mb-1"><code class="language-csharp" data-url="Jedlik_FeladatMegoldasok/05d57d4db444344395b6eaa4af931b430e9253b3/Fullstack/pizzarendel%C3%A9s/pizzeria.service.tests/PizzaRepositoryTests.cs" ></code></pre>
+        </div>
+    </div>
+</div>
+<p>
+    Természetesen a teszt metódusban szereplő <i>Assert</i>-ek számát még lehetne növelni pl.: a tag-ek nevét ellenőrzni, a többi árat vizsgálni, vagy a pizzák egyéb adatait. Úgy gondoltam ahhoz, a <i>GetById</i> függvény
+    helyes működését ellenőrízni lehessen ennyi <i>Assert</i> elég volt.
+ </p>
