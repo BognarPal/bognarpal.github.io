@@ -1,0 +1,72 @@
+<div class="float-start w-75 pe-4">
+    <h3 id="tdd">Tesztvezérelt fejlesztés</h3>
+    <p>
+        A repository osztályok létrehozását teszvezérelten szeretném létrehozni (<a
+            href="https://hu.wikipedia.org/wiki/Tesztvez%C3%A9relt_fejleszt%C3%A9s" target="info">TDD Wiki</a>).
+        Ezzel a megoldással - és kellően sok teszttel - biztosítható a megfelelő működés.
+    </p>
+    <p>
+        Ehhez szükség lesz egy új projektre, amiben a repository tesztek kerülnek. A projekt típusa: <i>xUnit Test Project</i>. Tesztek írására használható lenne még az <i>MsTest</i> és az <i>NUnit</i> teszt is, azonban nekem erre esett a választásom.
+        A projekt neve <i>pizzeria.service.tests</i> lett. (A létrehozás folyamatáról a videó egy kicsit lejjebb található.)
+    </p>
+    <p>
+        Az ebben a projektben szerepelő tesztek unit tesztek lesznek, azzal a kiegészítéssel, hogy a feladatuk miatt adatbázissal kell kommunikálniuk, tehát bizonyos nézőpontból integrációs tesztnek is tekinthetők.
+        Ahhoz, hogy ne kelljen ehhez külön adatbázis(oka)t létrehozni a .Net által biztosított <i>InMemoryDatabase</i>-t használtam. 
+    </p>
+</div>
+<div class="float-start w-25">
+    <img src="test-driven-development.png" alt="TDD" class="w-100">
+</div>
+
+
+<div class="w-75 mx-auto text-center" style="min-width: 680px; clear: both;">
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="create-testproject-windows" data-bs-toggle="tab" data-bs-target="#createTestprojectWindows" type="button"  role="tab" aria-controls="createTestprojectWindows" aria-selected="true">
+                Test projekt létrehozása - Visual Studio (Windows)
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="create-testproject-linux" data-bs-toggle="tab" data-bs-target="#createTestprojectLinux" type="button"  role="tab" aria-controls="createTestprojectLinux" aria-selected="true">
+                Test projekt létrehozása - Visual Studio Code
+            </button>
+        </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="createTestprojectWindows" role="tabpanel" aria-labelledby="create-testproject-windows">
+            <iframe width="672" height="378" src="https://www.youtube.com/embed/TbvI-9yr8dk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        <div class="tab-pane fade" id="createTestprojectLinux" role="tabpanel" aria-labelledby="create-testproject-linux">
+            <!-- <iframe width="672" height="378" src="https://www.youtube.com/embed/dpyQRVrntxA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->
+            <div class="text-center">
+                <img src="/img/under-construction.gif" alt="" height="378">
+            </div>
+        </div>
+    </div>
+</div>
+
+<hr>
+
+<h3 id="testdbcontext">DbContext a teszteléshez</h3>
+<p>
+    Ahogy az a videóban is látható külön teszteléshez szükség lesz egy az eredeti <i>ApplicationDbContext</i>-ből származtatott osztályra. Ezzel biztosítható, hogy minden teszt futtatás azonos induló állapotból történjen,
+    hiszen minden tesztelés előtt a memóriában "felépül" az adatbázis, és a teszt futtatása után törlődik is onnan. Az alábbi kód mutatja az elkészült osztályt:
+</p>
+<div>
+    <pre class="mb-1"><code class="language-csharp" data-url="Jedlik_FeladatMegoldasok/cda22b16e372da66cc1fa39c5830d3d143a57da4/Fullstack/pizzarendel%C3%A9s/pizzeria.service.tests/TestDbContext.cs" ></code></pre>
+</div>
+<p>
+    Az <i>OnCofiguring</i> metódus felülbírálása (override) biztosítja, hogy az adatbázis a memóriában jöjjön létre. Az <i>OnModelCreating</i> metódus első sora az ősosztályban már megadott induló adatokat hozza létre,
+    a további sorok a teszteléshez szükséges adatok létrehozásáért felelnek.
+</p>
+<p>
+    Az utolsó statikus függvény egy példányosított osztályt ad vissza, ami mögött olyan memória adatbázis van, amiben szerepelnek a táblák és az adatok.
+</p>
+<div class="row my-3">
+    <div class="offset-1 col-5">
+        <button class="btn btn-secondary" onclick="loadContent('adatbazisLetrehozasa')">Előző</button>
+    </div>
+    <div class="col-5 text-end">
+        <button class="btn btn-secondary" onclick="loadContent('repositoryTests')">Tovább</button>
+    </div>
+</div>
