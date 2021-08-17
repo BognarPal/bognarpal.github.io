@@ -7,8 +7,14 @@ function loadSourceCode(htmlElement, url, functionSignature) {
                 var lines = this.responseText.split('\n');
                 var sourceCode = '';
                 var bracesCount = undefined;
-                for (line of lines) {                    
+                for (line of lines) {   
                     if (line.indexOf(functionSignature) !== -1 || sourceCode) {
+                        if (!sourceCode) {
+                            var index = lines.indexOf(line);
+                            while (--index > 0 && (lines[index].trim().startsWith('[') || lines[index].trim().startsWith('///')))
+                                sourceCode = lines[index] + '\n' + sourceCode;
+                        }
+
                         sourceCode += line + '\n';
                         bracesCountChange = (line.split('{').length - 1) - (line.split('}').length - 1);
                         if (bracesCountChange !== 0) {
