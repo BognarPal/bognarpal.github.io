@@ -217,6 +217,12 @@
     </div>
 </div>
 <p>
+    A létrehozott <i>ApplicationDbContext</i> osztály:
+</p>
+<div class="w-75 mx-auto mb-3" style="max-height: 400px; overflow-y: auto;">
+    <pre class="mb-0"><code class="language-csharp" data-url="Jedlik_FeladatMegoldasok/4a617e19df49f219e930ea651e53b50beeae279e/Fullstack/pizzarendel%C3%A9s/pizzeria.service/ApplicationDbContext.cs" ></code></pre>
+</div>
+<p>
     A következő lépés az adatbázis tényleges létrehozása:
 </p>
 <div class="w-75 mx-auto text-center" style="min-width: 680px;">
@@ -251,14 +257,19 @@
     <img src="DBDiagram_1.png" alt="Db diagram hibás" width="720">
 </p>
 <P>
-    Van vele egy kis gond: egy pizzához csak <i>tag</i>-et lehet rendelni, azaz a két tábla közötti kapcsolat jelenleg 1:N, miközben N:M kapcsolatra lenne szükség. 
-    Ennek a megoldása viszonylag egyszerű: szükség van egy újabb jellemzőre a <i>PizzaTag</i> osztályban: <i>Pizzas</i>.
+    Van vele két probléma: 
+    <ul>
+        <li>
+            Egy pizzához csak <i>tag</i>-et lehet rendelni, azaz a két tábla közötti kapcsolat jelenleg 1:N, miközben N:M kapcsolatra lenne szükség. 
+            Ennek a megoldása viszonylag egyszerű: szükség van egy újabb jellemzőre a <i>PizzaTag</i> osztályban: <i>Pizzas</i>.        
+        </li>
+        <li>
+            A felhasználók és a szerepek között sincs meg az N:M kapcsolat. Itt a <i>Role</i> osztályban egy új <i>Users</i> jellemzővel lehet ezt kikényszeríteni.
+        </li>
+    </ul>
 </P>
-<div class="w-75 mx-auto">
-    <pre class="mb-0"><code class="language-csharp" data-url="Jedlik_FeladatMegoldasok/4a617e19df49f219e930ea651e53b50beeae279e/Fullstack/pizzarendel%C3%A9s/pizzeria.service/models/PizzaTag.cs" ></code></pre>
-</div>
 <p>
-    A javítás és az adatbázis ismételt létrehozása videón:
+    A <i>Pizza</i> és <i>Pizzatag</i> osztályokra vonatkozó javítás és az adatbázis ismételt létrehozása videón:
 </p>
 <div class="w-75 mx-auto text-center" style="min-width: 680px;">
     <ul class="nav nav-tabs" id="myTab5" role="tablist">
@@ -291,43 +302,96 @@
 <p class="text-center py-2">
     <img src="DBDiagram_2.png" alt="Db diagram kész" width="720">
 </p>
-
-<p>
-    Az előző ábrához képest a változás az, hogy megjelent a <i>PizzaPizzatag</i> tábla, ami biztosítja az N:M kapcsolatot a pizzák és tagek között. A fejlesztés egy későbbi fázisában azonban kiderült, hogy ennek a táblának a létrehozását 
-    nem lehet ennyire az Entity Framework-re bízni. Ezen kívül a <i>Pizza</i> osztályban a <i>Tags</i> jellemző értékét nem lehet írni, hiszen most már nincs kapcsolatban az adatbázissal.
-    <br>
-    A szükséges módosítások:
+<p class="mt-2">
+    A módosítások során valamilyen okból az EF átnevezte a <i>User</i> táblát <i>Employees</i>-re. Ez bár nem lenne nagy gond, engem mégis zavart, ezért az <i>User</i>
+    osztály esetében meghatározásra került a tábla neve. Az osztályok, amelyek változtak:
 </p>
 <div>
-    <ul class="nav nav-tabs" id="tabModells_1" role="tablist">
+    <ul class="nav nav-tabs" id="myTab_2" role="tablist">
         <li class="nav-item" role="presentation">
             <button class="nav-link active" id="tab-elso_2" data-bs-toggle="tab" data-bs-target="#tabelso_2" type="button"  role="tab" aria-controls="tabelso_2" aria-selected="true">
-                PizzaPizzaTag
+                PizzaTag
             </button>
         </li>
         <li class="nav-item" role="presentation">
             <button class="nav-link" id="tab-masodik_2" data-bs-toggle="tab" data-bs-target="#tabmasodik_2" type="button"  role="tab" aria-controls="tabmasodik_2" aria-selected="true">
-                Pizza
+                Role
             </button>
         </li>
         <li class="nav-item" role="presentation">
             <button class="nav-link" id="tab-harmadik_2" data-bs-toggle="tab" data-bs-target="#tabharmadik_2" type="button"  role="tab" aria-controls="tabharmadik_2" aria-selected="true">
-                PizzaTag
+                User
             </button>
         </li>
     </ul>
-    <div class="tab-content" id="tabcontentModells_1">
-        <div class="tab-pane fade show active" id="tabelso_2" role="tabpanel" aria-labelledby="tab-elso_2">
-            <pre class="mb-0"><code class="language-csharp" data-url="Jedlik_FeladatMegoldasok/dcd38a51f0e377aac43390c23773f7388c454047/Fullstack/pizzarendel%C3%A9s/pizzeria.service/models/PizzaPizzaTag.cs" ></code></pre>            
+    <div class="tab-content" id="myTabContent_2">
+        <div class="tab-pane fade show active overflow-auto" style="max-height: 620px;" id="tabelso_2" role="tabpanel" aria-labelledby="tab-elso_2">
+            <pre class="mb-0"><code class="language-csharp" data-url="Jedlik_FeladatMegoldasok/4a617e19df49f219e930ea651e53b50beeae279e/Fullstack/pizzarendel%C3%A9s/pizzeria.service/models/PizzaTag.cs" ></code></pre>            
         </div>
-        <div class="tab-pane fade" id="tabmasodik_2" role="tabpanel" aria-labelledby="tab-masodik_2">
-            <pre class="mb-0"><code class="language-csharp" data-url="Jedlik_FeladatMegoldasok/5766357c579b500d5dc62232a814b213652c1c8e/Fullstack/pizzarendel%C3%A9s/pizzeria.service/models/Pizza.cs" ></code></pre>
+        <div class="tab-pane fade overflow-auto" style="max-height: 620px;" id="tabmasodik_2" role="tabpanel" aria-labelledby="tab-masodik_2">
+            <pre class="mb-0"><code class="language-csharp" data-url="Jedlik_FeladatMegoldasok/4c7ecfcc0fab8f56740eb2dbb5cc79b982f4ac37/Fullstack/pizzarendel%C3%A9s/pizzeria.service/models/Role.cs" ></code></pre>            
         </div>
-        <div class="tab-pane fade" id="tabharmadik_2" role="tabpanel" aria-labelledby="tab-harmadik_2">
-            <pre class="mb-0"><code class="language-csharp" data-url="Jedlik_FeladatMegoldasok/dcd38a51f0e377aac43390c23773f7388c454047/Fullstack/pizzarendel%C3%A9s/pizzeria.service/models/PizzaTag.cs" ></code></pre>
+        <div class="tab-pane fade overflow-auto" style="max-height: 620px;" id="tabharmadik_2" role="tabpanel" aria-labelledby="tab-harmadik_2">
+            <pre class="mb-0"><code class="language-csharp" data-url="Jedlik_FeladatMegoldasok/4c7ecfcc0fab8f56740eb2dbb5cc79b982f4ac37/Fullstack/pizzarendel%C3%A9s/pizzeria.service/models/User.cs" ></code></pre>            
         </div>
+    </div>
 </div>
-<p>Egy újabb migráció és adatfrissítés után az látszik az adatbázison, hogy csupán a <i>PizzaPizzaTag</i> táblában lévő mezők nevei módosultak.</p>
+
+
+<p>
+    Az előző ábrához képest a változás az, hogy megjelent a <i>PizzaPizzatag</i> és a <i>RoleUser</i> tábla, Amelyek biztosítják a szükséges N:M kapcsolatokat.
+    A fejlesztés egy későbbi fázisában azonban kiderült, hogy ezeknek a táblának a létrehozását nem lehet ennyire az Entity Framework-re bízni. 
+    Ezen kívül a <i>Pizza</i> osztályban a <i>Tags</i> jellemző értékét nem lehet írni, hiszen most már nincs kapcsolatban az adatbázissal.
+    <br>
+    A szükséges módosítások:
+</p>
+<div>
+    <ul class="nav nav-tabs" id="tabModells_3" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="tab-elso_3" data-bs-toggle="tab" data-bs-target="#tabelso_3" type="button"  role="tab" aria-controls="tabelso_3" aria-selected="true">
+                PizzaPizzaTag
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="tab-masodik_3" data-bs-toggle="tab" data-bs-target="#tabmasodik_3" type="button"  role="tab" aria-controls="tabmasodik_3" aria-selected="true">
+                Pizza
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="tab-harmadik_3" data-bs-toggle="tab" data-bs-target="#tabharmadik_3" type="button"  role="tab" aria-controls="tabharmadik_3" aria-selected="true">
+                PizzaTag
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="tab-negyedik_3" data-bs-toggle="tab" data-bs-target="#tabnegyedik_3" type="button"  role="tab" aria-controls="tabnegyedik_3" aria-selected="true">
+                UserRole
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="tab-otodik_3" data-bs-toggle="tab" data-bs-target="#tabotodik_3" type="button"  role="tab" aria-controls="tabotodik_3" aria-selected="true">
+                User
+            </button>
+        </li>
+    </ul>
+    <div class="tab-content" id="tabcontentModells_3" >
+        <div class="tab-pane fade show active overflow-auto" style="max-height: 620px;" id="tabelso_3" role="tabpanel" aria-labelledby="tab-elso_3">
+            <pre class="mb-0"><code class="language-csharp" data-url="Jedlik_FeladatMegoldasok/a1c6641994557889735f10f48860a1865d76475c/Fullstack/pizzarendel%C3%A9s/pizzeria.service/models/PizzaPizzaTag.cs" ></code></pre>            
+        </div>
+        <div class="tab-pane fade overflow-auto" style="max-height: 620px;" id="tabmasodik_3" role="tabpanel" aria-labelledby="tab-masodik_3">
+            <pre class="mb-0"><code class="language-csharp" data-url="Jedlik_FeladatMegoldasok/a1c6641994557889735f10f48860a1865d76475c/Fullstack/pizzarendel%C3%A9s/pizzeria.service/models/Pizza.cs" ></code></pre>
+        </div>
+        <div class="tab-pane fade overflow-auto" style="max-height: 620px;" id="tabharmadik_3" role="tabpanel" aria-labelledby="tab-harmadik_3">
+            <pre class="mb-0"><code class="language-csharp" data-url="Jedlik_FeladatMegoldasok/a1c6641994557889735f10f48860a1865d76475c/Fullstack/pizzarendel%C3%A9s/pizzeria.service/models/PizzaTag.cs" ></code></pre>
+        </div>
+        <div class="tab-pane fade overflow-auto" style="max-height: 620px;" id="tabnegyedik_3" role="tabpanel" aria-labelledby="tab-negyedik_3">
+            <pre class="mb-0"><code class="language-csharp" data-url="Jedlik_FeladatMegoldasok/a1c6641994557889735f10f48860a1865d76475c/Fullstack/pizzarendel%C3%A9s/pizzeria.service/models/UserRole.cs" ></code></pre>
+        </div>
+        <div class="tab-pane fade overflow-auto" style="max-height: 620px;" id="tabotodik_3" role="tabpanel" aria-labelledby="tab-otodik_3">
+            <pre class="mb-0"><code class="language-csharp" data-url="Jedlik_FeladatMegoldasok/a1ed006b253db8431e4e70b58b66f2567fb5499c/Fullstack/pizzarendel%C3%A9s/pizzeria.service/models/User.cs" ></code></pre>
+        </div>
+    </div>
+</div>
+<p>Egy újabb migráció és adatfrissítés után az látszik az adatbázison, hogy a <i>PizzaPizzaTag</i> táblában lévő mezők nevei módosultak, valamint a <i>RoleUser</i> tábla neve <i>UserRole</i>-ra változott.</p>
 
 <div class="row my-3">
     <div class="offset-1 col-5">
