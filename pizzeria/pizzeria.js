@@ -50,7 +50,7 @@ function loadContent(page) {
 
     var rootMenuElement = document.querySelector('#sidebar p[data-page="' + page + '"]');
     if (!rootMenuElement) {
-        page = 'feladatDefinicio';
+        page = 'eloszo';
         loadContent(page);
         return;
     }
@@ -126,7 +126,7 @@ xhrSideBar.addEventListener('readystatechange', function () {
         const params = Object.fromEntries(urlSearchParams.entries());
         var page = params['page'];
         if (!page) {
-            page = 'feladatDefinicio'
+            page = 'eloszo'
         }    
     
         loadContent(page + window.location.hash);           
