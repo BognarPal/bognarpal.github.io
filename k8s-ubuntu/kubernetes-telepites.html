@@ -1,0 +1,76 @@
+<h3>Telepítés</h3>
+
+<p>
+    A master node-on biztosítani kell a statikus IP címet. (<a href="https://linuxize.com/post/how-to-configure-static-ip-address-on-ubuntu-20-04/" target="info">link</a>)
+    <br>
+    /etc/netplan/00-installer-config.yaml fájl tartalma:
+    <pre><code># This is the network config written by 'subiquity'
+network:
+  version: 2
+  ethernets:
+    eth0:
+      dhcp4: no
+      addresses:
+        - 192.168.1.31/24
+      gateway4: 192.168.1.1
+      nameservers:
+          addresses: [192.168.1.1, 8.8.8.8]</code></pre>
+    netplan érvényesítése:
+    <pre><code class="bash">sudo netplan apply</code></pre>     
+</p>
+<p>Telepítési lépések (<a href="https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/" target="info">doc</a>):
+<ul>
+    <li>
+        apt repo-k frissítése
+        <pre><code class="bash">sudo apt-get update</code></pre>
+    </li>
+    <li>
+        Swap kikapcsolása
+        <pre><code class="bash">sudo swapoff -a</code></pre>
+        /etc/fstab fájl szerkesztése: swap fájl végleges kikapcsolásához
+        <pre><code class="bash">sudo nano /etc/fstab</code></pre>
+        <img src="etc-fstab.png" alt="" width="100%" class="mb-2">
+    </li>
+    <li>
+        Előkészítés
+        <pre><code class="bash">sudo apt-get update && sudo apt-get install -y apt-transport-https ca-certificates curl gnupg lsb-release
+sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list > /dev/null
+echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null</code></pre>
+    </li>
+    <li>
+        Docker telepítése
+        <pre><code class="bash">sudo apt-get update && sudo apt-get install -y docker-ce=5:20.10.7~3-0~ubuntu-focal containerd.io
+sudo apt-mark hold docker-ce</code></pre>
+        Docker daemon beállítása (<a href="https://kubernetes.io/docs/setup/production-environment/container-runtimes/#docker" target="info">doc</a>):
+        <pre><code class="bash">sudo mkdir /etc/docker
+cat &lt;&lt;EOF | sudo tee /etc/docker/daemon.json
+{
+    "exec-opts": ["native.cgroupdriver=systemd"],
+    "log-driver": "json-file",
+    "log-opts": {
+    "max-size": "100m"
+    },
+    "storage-driver": "overlay2"
+}
+EOF</code></pre>        
+        Docker service újraindítása:
+        <pre><code class="bash">sudo systemctl enable docker
+sudo systemctl daemon-reload
+sudo systemctl restart docker</code></pre>
+    </li>
+
+    <li>
+        kubelet, kubeadm és kubectl csomagok telepítése
+        <pre><code class="bash">sudo apt-get update && sudo apt-get install -y kubelet kubeadm kubectl
+sudo apt-mark hold kubelet kubeadm kubectl</code></pre>
+    </li>
+    <li>
+        cgroup driver beállítása
+        <pre><code class="bash">sudo nano /etc/systemd/system/kubelet.service.d/10-kubeadm.conf</code></pre>
+        Új sor hozzáadása:
+        <pre><code class="bash">Environment="cgroup-driver=systemd/cgroup-driver=cgroupfs"</code></pre>
+        <img src="kubeadm-conf.png" alt="" width="100%" class="mb-2">
+    </li>
+    </p>

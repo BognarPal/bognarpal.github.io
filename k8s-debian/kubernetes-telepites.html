@@ -1,0 +1,89 @@
+<h3>Telepítés</h3>
+
+<p>
+    A master node-on biztosítani kell a statikus IP címet. (<a href="https://www.snel.com/support/how-to-configure-static-ip-on-debian-10/" target="info">link</a>)
+    <br>
+    /etc/network/interfaces fájl tartalma:
+    <pre><code># This file describes the network interfaces available on your system
+# and how to activate them. For more information, see interfaces(5).
+
+source /etc/network/interfaces.d/*
+
+# The loopback network interface
+auto lo
+iface lo inet loopback
+
+# The primary network interface
+allow-hotplug eth0
+iface eth0 inet static
+  address 192.168.1.31
+  netmask 255.255.255.0
+  gateway 192.168.1.1
+  dns-nameservers 192.168.1.1 8.8.8.8
+</code></pre>
+</p>
+<p>Telepítési lépések (<a href="https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/" target="info">doc</a>):
+<ul>
+    <li>
+        Swap kikapcsolása
+        <pre><code class="bash">swapoff -a</code></pre>
+        /etc/fstab fájl szerkesztése: swap fájl végleges kikapcsolásához
+        <pre><code class="bash">nano /etc/fstab</code></pre>
+        <img src="etc-fstab.png" alt="" width="100%" class="mb-2">
+    </li>
+    <li>
+        Előkészítés
+        <pre><code class="bash">apt-get update && apt-get install -y apt-transport-https ca-certificates curl gnupg2</code></pre>
+    </li>
+    <li>
+        Docker telepítése
+        <pre><code class="bash">mkdir /etc/docker
+cat &gt; /etc/docker/daemon.json &lt;&lt;EOF
+{
+  "exec-opts": ["native.cgroupdriver=systemd"],
+  "log-driver": "json-file",
+  "log-opts": { "max-size": "100m" },
+  "storage-driver": "overlay2"
+}
+EOF
+curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -
+echo 'deb [arch=amd64] https://download.docker.com/linux/debian buster stable' &gt; /etc/apt/sources.list.d/docker.list
+apt-get update
+apt-get install -y --no-install-recommends docker-ce</code></pre>
+sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list > /dev/null
+echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null</code></pre>
+    </li>
+    <li>
+        Docker service újraindítása:
+        <pre><code class="bash">systemctl enable docker
+systemctl daemon-reload
+systemctl restart docker</code></pre>
+    </li>
+    <li>
+        kubelet, kubeadm és kubectl csomagok telepítése
+        <pre><code class="bash">curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
+echo 'deb https://apt.kubernetes.io/ kubernetes-xenial main' > /etc/apt/sources.list.d/kubernetes.list
+apt-get update && apt-get install -y kubelet kubeadm kubectl</code></pre>
+    </li>
+    <li>
+        pod network beállítása
+        <pre><code class="bash">kubeadm init --pod-network-cidr=10.244.0.0/16</code></pre>
+    </li>
+    <li>
+        kubectl beállítása
+        <pre><code class="bash">mkdir -p $HOME/.kube
+cp -i /etc/kubernetes/admin.conf $HOME/.kube/config</code></pre>
+    </li>
+    <li>
+        flannel (<a href="https://github.com/flannel-io/flannel" target="info">info</a> ) telepítése   
+        <pre><code class="bash">kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml</code></pre>
+    </li>
+    
+    <li>
+        
+        <pre><code class="bash"></code></pre>
+    </li>
+
+    </p>

@@ -1,0 +1,40 @@
+<h3>Dashboard telepítése</h3>
+<p>Lépések
+    <ul>
+       <li>
+        Telepítés
+        <pre><code class="bash">kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.3.1/aio/deploy/recommended.yaml
+cat &gt; dashboard-admin.yaml &lt;&lt;EOF
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: kubernetes-dashboard
+  namespace: kubernetes-dashboard
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+  - kind: ServiceAccount
+    name: kubernetes-dashboard
+    namespace: kubernetes-dashboard
+EOF
+kubectl delete clusterrolebinding/kubernetes-dashboard
+kubectl apply -f dashboard-admin.yaml</code></pre>
+    </li>
+    <li>
+        Dashboard hozzáférés adatok lekérdezése
+        <pre><code class="bash">kubectl get secret -n kubernetes-dashboard \
+| grep kubernetes-dashboard-token- \
+| awk '{print $1}' \
+| xargs kubectl describe secret -n kubernetes-dashboard</code></pre>
+    </li>
+    <li>
+        Dashboard elérése
+        <pre><code class="bash">kubectl proxy</code></pre>
+        Ezután a site elérése: <a href=" http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/">http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/</a>
+        <br>
+        A megjelenő ablakban az előző pontban lekért tokent megadva megjelenik a böngészőben a dashboard.
+    </li>
+    </ul>
+</p>

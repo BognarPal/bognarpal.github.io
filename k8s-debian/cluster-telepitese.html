@@ -1,0 +1,38 @@
+<h3>Dashboard telepítése</h3>
+<p>
+    Néhány portot engedélyezni kell a tűzfalon:
+    <pre><code class="bash">sudo ufw allow 6443/tcp
+sudo ufw allow 2379:2380/tcp
+sudo ufw allow 8001/tcp
+sudo ufw allow 10250/tcp
+sudo ufw allow 10251/tcp
+sudo ufw allow 10252/tcp</code></pre>
+</p>
+<p>Lépések a master node-on
+    <ul>
+        <li>
+            pod network létrehozása
+            <pre><code class="bash">sudo kubeadm init --pod-network-cidr=10.244.0.0/16  --apiserver-advertise-address=192.168.1.31</code></pre>
+            ahol a <i>192.168.31.1</i> a master node IP címe, a <i>10.244.0.0/16</i> tartomány pedig a pod-ok közötti kommunikációra szolgáló címtartomány.
+        </li>
+        <li>Cluster indítása
+            <pre><code class="bash">mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config</code></pre>
+        </li>
+        <li>
+            Pod network telepítése (több lehetőség is van: <a href="https://kubernetes.io/docs/concepts/cluster-administration/addons/" target="info">link</a> )
+            Egyik lehetőség: <a href="https://docs.projectcalico.org/getting-started/kubernetes/quickstart" target="info">Calico </a>
+            <pre><code class="bash">kubectl create -f https://docs.projectcalico.org/manifests/tigera-operator.yaml
+kubectl create -f https://docs.projectcalico.org/manifests/custom-resources.yaml</code></pre>
+            Telepítés ellenőrzése:
+            <pre><code class="bash">kubectl get pods -o wide --all-namespaces</code></pre>
+        </li>
+        <li>
+            Kubernetes dashboard telepítése (<a href="https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/" target="info">doc</a>)
+            <pre><code class="bash">kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.3.1/aio/deploy/recommended.yaml</code></pre>
+            A távoli elérést még nem sikerült megoldani.
+
+        </li>
+    </ul>
+</p>
