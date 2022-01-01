@@ -46,14 +46,11 @@ cat &gt; /etc/docker/daemon.json &lt;&lt;EOF
   "storage-driver": "overlay2"
 }
 EOF
-curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -
-echo 'deb [arch=amd64] https://download.docker.com/linux/debian buster stable' &gt; /etc/apt/sources.list.d/docker.list
-apt-get update
-apt-get install -y --no-install-recommends docker-ce</code></pre>
-sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
-echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list > /dev/null
-echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null</code></pre>
+curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/debian \
+  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+apt-get update && apt-get install -y --no-install-recommends docker-ce</code></pre>
     </li>
     <li>
         Docker service újraindítása:
@@ -63,12 +60,12 @@ systemctl restart docker</code></pre>
     </li>
     <li>
         kubelet, kubeadm és kubectl csomagok telepítése
-        <pre><code class="bash">curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
-echo 'deb https://apt.kubernetes.io/ kubernetes-xenial main' > /etc/apt/sources.list.d/kubernetes.list
-apt-get update && apt-get install -y kubelet kubeadm kubectl</code></pre>
+        <pre><code class="bash">sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
+echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+apt-get update && apt-get install -y kubelet kubeadm kubectl && sudo apt-mark hold kubelet kubeadm kubectl</code></pre>
     </li>
     <li>
-        pod network beállítása
+        Node létrehozása és pod network beállítása
         <pre><code class="bash">kubeadm init --pod-network-cidr=10.244.0.0/16</code></pre>
     </li>
     <li>
@@ -77,13 +74,21 @@ apt-get update && apt-get install -y kubelet kubeadm kubectl</code></pre>
 cp -i /etc/kubernetes/admin.conf $HOME/.kube/config</code></pre>
     </li>
     <li>
+        helm (package manager for k8s) telepítése   
+        <pre><code class="bash">curl https://baltocdn.com/helm/signing.asc | apt-key add -
+echo "deb https://baltocdn.com/helm/stable/debian/ all main" | tee /etc/apt/sources.list.d/helm-stable-debian.list
+apt-get update && apt-get install helm -y</code></pre>
+    </li>
+
+    <li>
         flannel (<a href="https://github.com/flannel-io/flannel" target="info">info</a> ) telepítése   
         <pre><code class="bash">kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml</code></pre>
     </li>
     
-    <li>
-        
-        <pre><code class="bash"></code></pre>
-    </li>
+   
 
     </p>
+
+    
+    https://www.datapacket.com/blog/build-kubernetes-cluster
+    

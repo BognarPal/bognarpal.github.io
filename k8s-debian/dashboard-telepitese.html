@@ -1,9 +1,15 @@
 <h3>Dashboard telepítése</h3>
 <p>Lépések
     <ul>
+      <!-- <li>Ki kell kapcsolni azt a szabályt, ami megakadályozza a master node-on pod-ok létrehozását
+        <pre><code class="bash">kubectl taint node debian-k8s node-role.kubernetes.io/master:NoSchedule-
+kubectl taint node debian-k8s node.kubernetes.io/not-ready-</code></pre>
+
+      </li> -->
+
        <li>
         Telepítés
-        <pre><code class="bash">kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.3.1/aio/deploy/recommended.yaml
+        <pre><code class="bash">kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.4.0/aio/deploy/recommended.yaml
 cat &gt; dashboard-admin.yaml &lt;&lt;EOF
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -32,7 +38,7 @@ kubectl apply -f dashboard-admin.yaml</code></pre>
     <li>
         Dashboard elérése
         <pre><code class="bash">kubectl proxy</code></pre>
-        Ezután a site elérése: <a href=" http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/">http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/</a>
+        Ezután a site elérése: <a href=" http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/" target="k8s-dashboard">http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/</a>
         <br>
         A megjelenő ablakban az előző pontban lekért tokent megadva megjelenik a böngészőben a dashboard.
     </li>

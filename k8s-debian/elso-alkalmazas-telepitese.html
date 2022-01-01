@@ -1,0 +1,15 @@
+<h3>Az első alkalmazás (pod és szervíz) telepítése</h3>
+
+<p>A yaml fájlok elkészítése után az alábbi parancsot kiadva...</p>
+<pre><code class="bash">kubectl apply -f .</code></pre>
+<p>némi várakozás után azt vártam, hogy létrejöbn a pod, de a </p>
+<pre><code class="bash">kubectl describe pods</code></pre>
+<p>
+    parancs hatására az alábbi hiba volt az események között:
+    <br class="my-2">
+    <i>Warning  FailedScheduling  11h   default-scheduler  0/1 nodes are available: 1 node(s) had taint {node-role.kubernetes.io/master: }, that the pod didn't tolerate.</i>
+    <br class="my-2">
+    Némi keresgélés után a <a href="https://stackoverflow.com/questions/56162944/master-tainted-no-pods-can-be-deployed#answer-61801981" target="info">stackowerflow</a>-n találtam megoldást:
+</p>
+<pre><code class="bash">kubectl taint node debian-k8s node-role.kubernetes.io/master:NoSchedule-</code></pre>
+
