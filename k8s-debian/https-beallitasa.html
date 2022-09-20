@@ -1,0 +1,60 @@
+<h3>Https beállítása</h3>
+
+<h2>Cert manager telepítése</h2>
+<p>Feladat, hogy a https certifikációt időről időre frissítse</p>
+<pre><code class="bash">helm repo add jetstack https://charts.jetstack.io
+helm repo update
+</code></pre>
+A telepítés:
+<pre><code class="bash">helm install \
+cert-manager jetstack/cert-manager \
+--namespace cert-manager \
+--create-namespace \
+--version v1.9.1 \
+--set installCRDs=true</code></pre>
+
+<h2>Config fájlok</h2>
+<p><b>issuer.yaml</b></p>
+<pre><code>apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-prod
+spec:
+  acme:
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: "bognar.pal@jedlik.eu"
+    privateKeySecretRef:
+      name: letsencrypt-prod
+    solvers:
+      - http01:
+          ingress:
+            class: nginx</code></pre>
+
+<p><b>certificate.yaml</b></p>
+<pre><code>apiVersion: cert-manager.io/v1
+
+kind: Certificate
+metadata:
+  name: cluster-jedlik-eu-tls
+spec:
+  secretName: cluster-jedlik-eu
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  commonName: cluster.jedlik.eu
+  dnsNames:
+    - cluster.jedlik.eu</code></pre>
+
+<p>Config fájlok futtatása</p>            
+<pre><code class="bash">kubectl apply -f issuer.yaml
+kubectl apply -f certificate.yaml</code></pre>
+
+<h2>Ingres config módosítások</h2>
+<p>Két új "annotation"</p>
+<pre><code class="bash">    cert-manager.io/cluster-issuer: 'letsencrypt-prod'
+    nginx.ingress.kubernetes.io/ssl-redirect: 'true'</code></pre>
+<p>A spec részben (a rules fölé) új beállítás</p>
+<pre><code class="bash">  tls:
+    - hosts:
+        - cluster.jedlik.eu
+      secretName: cluster-jedlik-eu</code></pre>
