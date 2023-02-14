@@ -108,8 +108,8 @@ metadata:
 spec:
   type: ClusterIP #NodePort
   ports:
-  - port: 9000
-    targetPort: 80
+  - port: 80
+    targetPort: 9000
     #nodePort: 30008
   selector:
     app: sonar
@@ -119,7 +119,8 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: bp-ingress-service
+  name: sonar-ingress-service
+  namespace: sonar
   annotations:
     kubernetes.io/ingress.class: 'nginx'
     nginx.ingress.kubernetes.io/use-regex: 'true'
@@ -142,6 +143,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: viewpoint-webapi-cluster-ip-service
+                name: sonar-svc
                 port:
                   number: 80
