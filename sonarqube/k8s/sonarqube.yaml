@@ -1,0 +1,147 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: sonar-pv  
+  namespace: sonar
+spec:
+  storageClassName: standard
+  capacity:
+    storage: 15Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/home/k8s/sonar-data"
+  
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sonar-pvc
+  namespace: sonar
+spec:
+  storageClassName: standard
+  volumeName: sonar-pv
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 15Gi   
+      
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: sonar-config
+  namespace: sonar
+  labels:
+    app: sonar
+data:
+  SONARQUBE_JDBC_URL: "jdbc:postgresql://postgres:5432/sonar_db"
+  SONARQUBE_JDBC_USERNAME: "sonar_user"
+  SONARQUBE_JDBC_PASSWORD: "S0N4RQUB3"
+  # JAVA_OPTS: "-Duser.timezone=CET -Xmx2048m"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sonar
+  namespace: sonar
+  labels:
+    app: sonar
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: sonar
+  template:
+    metadata:
+      labels:
+        app: sonar
+    spec:
+      initContainers:
+      - name: init
+        image: busybox
+        command:
+        - sysctl
+        - -w
+        - vm.max_map_count=262144
+        imagePullPolicy: IfNotPresent
+        securityContext:
+          privileged: true
+      containers:
+      - name: sonarqube
+        image: sonarqube:9.9.0-community
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 9000
+        envFrom:
+        - configMapRef:
+            name: sonar-config
+        volumeMounts:
+        - name: sonar-pvc
+          mountPath: "/opt/sonarqube/data/"
+          subPath: data
+        - name: sonar-pvc
+          mountPath: "/opt/sonarqube/extensions/"
+          subPath: extensions
+        resources:
+          requests:
+            memory: "1024Mi"
+          limits:
+            memory: "2048Mi"
+      volumes:
+      - name: sonar-pvc
+        persistentVolumeClaim:
+          claimName: sonar-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sonar-svc
+  namespace: sonar
+  labels:
+    app: sonar
+spec:
+  type: ClusterIP #NodePort
+  ports:
+  - port: 9000
+    targetPort: 80
+    #nodePort: 30008
+  selector:
+    app: sonar
+    
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: bp-ingress-service
+  annotations:
+    kubernetes.io/ingress.class: 'nginx'
+    nginx.ingress.kubernetes.io/use-regex: 'true'
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+    cert-manager.io/cluster-issuer: 'letsencrypt-prod'
+    nginx.ingress.kubernetes.io/ssl-redirect: 'true'
+    #nginx.ingress.kubernetes.io/whitelist-source-range: 10.0.0.0/8, 193.225.219.0/24
+    nginx.ingress.kubernetes.io/whitelist-source-range: 10.0.102.100/24, 193.225.219.0/24
+    
+spec:
+  tls:
+    - hosts:
+        - bp.cluster.jedlik.eu
+      secretName: cluster-jedlik-eu
+  rules:
+    - host: bp.cluster.jedlik.eu
+      http:
+        paths:
+          - path: /?(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: viewpoint-webapi-cluster-ip-service
+                port:
+                  number: 80
