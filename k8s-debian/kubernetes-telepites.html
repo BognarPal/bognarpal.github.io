@@ -75,9 +75,11 @@ cp -i /etc/kubernetes/admin.conf $HOME/.kube/config</code></pre>
     </li>
     <li>
         helm (package manager for k8s) telepítése   
-        <pre><code class="bash">curl https://baltocdn.com/helm/signing.asc | apt-key add -
-echo "deb https://baltocdn.com/helm/stable/debian/ all main" | tee /etc/apt/sources.list.d/helm-stable-debian.list
-apt-get update && apt-get install helm -y</code></pre>
+        <pre><code class="bash">curl https://baltocdn.com/helm/signing.asc | gpg --dearmor | tee /usr/share/keyrings/helm.gpg > /dev/null
+apt-get install apt-transport-https --yes
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/helm.gpg] https://baltocdn.com/helm/stable/debian/ all main" | tee /etc/apt/sources.list.d/helm-stable-debian.list
+apt-get update
+apt-get install helm</code></pre>
     </li>
 
     <li>
