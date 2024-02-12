@@ -32,46 +32,70 @@ iface eth0 inet static
         <img src="etc-fstab.png" alt="" width="100%" class="mb-2">
     </li>
     <li>
-        Előkészítés
-        <pre><code class="bash">apt-get update && apt-get install -y apt-transport-https ca-certificates curl gnupg2</code></pre>
-    </li>
-    <li>
-        Docker telepítése
-        <pre><code class="bash">mkdir /etc/docker
-cat &gt; /etc/docker/daemon.json &lt;&lt;EOF
-{
-  "exec-opts": ["native.cgroupdriver=systemd"],
-  "log-driver": "json-file",
-  "log-opts": { "max-size": "100m" },
-  "storage-driver": "overlay2"
-}
+        Előkészítés (iptables-legacy-t kell választani)
+        <pre><code class="bash">apt-get update && apt-get -y install containerd iptables apt-transport-https gnupg2 curl sudo ca-certificates
+cat &gt; /etc/sysctl.d/99-k8s-cri.conf &lt;&lt;EOF
+net.bridge.bridge-nf-call-iptables=1
+net.bridge.bridge-nf-call-ip6tables=1
+net.ipv4.ip_forward=1
 EOF
-curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
-echo \
-  "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/debian \
-  $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
-apt-get update && apt-get install -y --no-install-recommends docker-ce</code></pre>
+sysctl --system
+modprobe overlay; modprobe br_netfilter
+echo -e overlay\\nbr_netfilter > /etc/modules-load.d/k8s.conf
+update-alternatives --config iptables
+swapoff -a
+</code></pre>
     </li>
     <li>
+        Grub módosítása
+        <pre><code>nano /etc/default/grub</code></pre>
+        10 sorhoz hozzá kell adni:
+        <pre><code>GRUB_CMDLINE_LINUX="systemd.unified_cgroup_hierarchy=0"</code></pre>
+        Frissítés, újraindítás
+        <pre><code>update-grub
+reboot</code></pre>
+    </li>
+    <li style="text-decoration: line-through;">
+        Docker telepítése
+        <pre><code class="bash">apt-get update
+install -m 0755 -d /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc
+chmod a+r /etc/apt/keyrings/docker.asc
+            
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian \
+$(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+tee /etc/apt/sources.list.d/docker.list > /dev/null
+apt-get update
+apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y</code></pre>
+    </li>
+    <li style="text-decoration: line-through;">
         Docker service újraindítása:
         <pre><code class="bash">systemctl enable docker
 systemctl daemon-reload
-systemctl restart docker</code></pre>
+systemctl restart docker
+rm /etc/containerd/config.toml
+systemctl restart containerd
+swapoff -a</code></pre>
     </li>
     <li>
         kubelet, kubeadm és kubectl csomagok telepítése
-        <pre><code class="bash">curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.29/deb/Release.key | gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
-echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.29/deb/ /' | tee /etc/apt/sources.list.d/kubernetes.list
-apt-get update && apt-get install -y kubelet kubeadm kubectl && apt-mark hold kubelet kubeadm kubectl</code></pre>
+        <pre><code class="bash">curl -fsSL https://packages.cloud.google.com/apt/doc/apt-key.gpg -o /etc/apt/keyrings/kubernetes-keyring.key
+echo "deb [signed-by=/etc/apt/keyrings/kubernetes-keyring.key] https://apt.kubernetes.io/ kubernetes-xenial main" | tee /etc/apt/sources.list.d/kubernetes.list
+apt update
+apt -y install kubelet=1.26.6-00 kubeadm=1.26.6-00 kubectl=1.26.6-00
+ln -s /opt/cni/bin /usr/lib/cni</code></pre>
     </li>
     <li>
         Node létrehozása és pod network beállítása
-        <pre><code class="bash">kubeadm init --pod-network-cidr=10.244.0.0/16</code></pre>
+        <pre><code class="bash">swapoff -a
+kubeadm init --pod-network-cidr=10.244.0.0/16 --cri-socket=unix:///run/containerd/containerd.sock</code></pre>
     </li>
     <li>
         kubectl beállítása
         <pre><code class="bash">mkdir -p $HOME/.kube
-cp -i /etc/kubernetes/admin.conf $HOME/.kube/config</code></pre>
+cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+chown $(id -u):$(id -g) $HOME/.kube/config
+kubectl cluster-info</code></pre>
     </li>
     <li>
         helm (package manager for k8s) telepítése   
@@ -82,11 +106,15 @@ apt-get update
 apt-get install helm</code></pre>
     </li>
 
-    <li>
+    <li style="text-decoration: line-through;">
         flannel (<a href="https://github.com/flannel-io/flannel" target="info">info</a> ) telepítése   
         <pre><code class="bash">kubectl apply -f https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml</code></pre>
     </li>
-    
+    <li>
+        Calico telepítése
+        <pre><code>wget https://raw.githubusercontent.com/projectcalico/calico/master/manifests/calico.yaml
+kubectl apply -f calico.yaml</code></pre>
+    </li>
    
 
     </p>

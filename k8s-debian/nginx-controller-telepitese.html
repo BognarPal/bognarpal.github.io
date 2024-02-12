@@ -1,10 +1,10 @@
 <h3>Nginx-ingress controller telepítése</h3>
 <ul>
-    <li>
+    <li style="text-decoration: line-through;">
         Megszorítás törlése
         <pre><code class="bash">kubectl taint node debian-k8s node-role.kubernetes.io/master:NoSchedule-</code></pre>
     </li>
-    <li>
+    <li style="text-decoration: line-through;">
         Metallb telepítése (<a href="https://metallb.universe.tf/installation" target="info">Forrás</a>)
         <pre><code class="bash">kubectl get configmap kube-proxy -n kube-system -o yaml | \
 sed -e "s/strictARP: false/strictARP: true/" | \
@@ -31,7 +31,11 @@ kubectl apply -f config.yaml</code></pre>
     </li>
     <li>
         Ingress Nginx telepítése (<a href="https://www.youtube.com/watch?v=UvwtALIb2U8" target="info">forrás</a>, <a href="https://kubernetes.github.io/ingress-nginx/deploy/" target="info">eredeti dokumentáció</a>)
-        <pre><code class="bash">helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx && helm repo update
+        <pre><code>kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.8.2/deploy/static/provider/cloud/deploy.yaml
+kubectl taint nodes --all node-role.kubernetes.io/control-plane-
+kubectl get pods -A </code></pre>
+        
+        <pre style="text-decoration: line-through;"><code class="bash">helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx && helm repo update
 helm show values ingress-nginx/ingress-nginx > ./ingress-nginx-values.yaml
 nano ./ingress-nginx-values.yaml</code></pre>
         A fájlban két helyen kell (összesen három) módosítást elvégezni. Ezek az alábbi képeken láthatók:
@@ -39,7 +43,7 @@ nano ./ingress-nginx-values.yaml</code></pre>
         <img src="modify-ingress-nginx-values-1.png" alt="">
         <img src="modify-ingress-nginx-values-2.png" alt="">
         <br class="my-2">
-        <pre><code class="mt-2 bash">kubectl create ns ingress-nginx
+        <pre style="text-decoration: line-through;"><code class="mt-2 bash">kubectl create ns ingress-nginx
 helm install myingress ingress-nginx/ingress-nginx -n ingress-nginx --values ./ingress-nginx-values.yaml</code></pre>
     </li>
     <!-- <li>
