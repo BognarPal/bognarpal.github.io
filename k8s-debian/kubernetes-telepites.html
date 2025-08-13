@@ -55,34 +55,14 @@ swapoff -a
         <pre><code>update-grub
 reboot</code></pre>
     </li>
-    <li style="text-decoration: line-through;">
-        Docker telepítése
-        <pre><code class="bash">apt-get update
-install -m 0755 -d /etc/apt/keyrings
-curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc
-chmod a+r /etc/apt/keyrings/docker.asc
-            
-echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian \
-$(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
-tee /etc/apt/sources.list.d/docker.list > /dev/null
-apt-get update
-apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y</code></pre>
-    </li>
-    <li style="text-decoration: line-through;">
-        Docker service újraindítása:
-        <pre><code class="bash">systemctl enable docker
-systemctl daemon-reload
-systemctl restart docker
-rm /etc/containerd/config.toml
-systemctl restart containerd
-swapoff -a</code></pre>
-    </li>
     <li>
         kubelet, kubeadm és kubectl csomagok telepítése
-        <pre><code class="bash">curl -fsSL https://packages.cloud.google.com/apt/doc/apt-key.gpg -o /etc/apt/keyrings/kubernetes-keyring.key
-echo "deb [signed-by=/etc/apt/keyrings/kubernetes-keyring.key] https://apt.kubernetes.io/ kubernetes-xenial main" | tee /etc/apt/sources.list.d/kubernetes.list
-apt update
-apt -y install kubelet=1.26.6-00 kubeadm=1.26.6-00 kubectl=1.26.6-00
+        <pre><code class="bash">curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.33/deb/Release.key | gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.33/deb/ /' |  tee /etc/apt/sources.list.d/kubernetes.list
+apt-get update
+sudo apt-get install -y kubelet kubeadm kubectl
+sudo apt-mark hold kubelet kubeadm kubectl
+systemctl enable --now kubelet
 ln -s /opt/cni/bin /usr/lib/cni</code></pre>
     </li>
     <li>
@@ -100,17 +80,20 @@ kubectl cluster-info</code></pre>
     <li>
         helm (package manager for k8s) telepítése   
         <pre><code class="bash">curl https://baltocdn.com/helm/signing.asc | gpg --dearmor | tee /usr/share/keyrings/helm.gpg > /dev/null
-apt-get install apt-transport-https --yes
 echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/helm.gpg] https://baltocdn.com/helm/stable/debian/ all main" | tee /etc/apt/sources.list.d/helm-stable-debian.list
 apt-get update
 apt-get install helm</code></pre>
     </li>
 
-    <li style="text-decoration: line-through;">
-        flannel (<a href="https://github.com/flannel-io/flannel" target="info">info</a> ) telepítése   
-        <pre><code class="bash">kubectl apply -f https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml</code></pre>
-    </li>
     <li>
+        flannel (<a href="https://github.com/flannel-io/flannel" target="info">info</a> ) telepítése   
+        <pre><code class="bash">kubectl taint nodes --all node-role.kubernetes.io/master=:NoSchedule --overwrite
+kubectl taint nodes --all node-role.kubernetes.io/control-plane=:NoSchedule --overwrite
+kubectl taint nodes --all node-role.kubernetes.io/control-plane- node-role.kubernetes.io/master- --overwrite
+
+kubectl apply -f https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml</code></pre>
+    </li>
+    <li style="text-decoration: line-through;">
         Calico telepítése
         <pre><code>wget https://raw.githubusercontent.com/projectcalico/calico/master/manifests/calico.yaml
 kubectl apply -f calico.yaml</code></pre>
@@ -119,7 +102,4 @@ kubectl apply -f calico.yaml</code></pre>
 
     </p>
 
-    
-    https://www.datapacket.com/blog/build-kubernetes-cluster
-    https://serverfault.com/questions/1118051/failed-to-run-kubelet-validate-service-connection-cri-v1-runtime-api-is-not-im
 	

@@ -13,8 +13,11 @@ A telepítés:
 cert-manager jetstack/cert-manager \
 --namespace cert-manager \
 --create-namespace \
---version v1.9.1 \
---set installCRDs=true</code></pre>
+--version v1.18.2 \
+--set installCRDs=true \
+--set crds.keep=true \
+--set global.leaderElection.namespace=cert-manager \
+--set config.featureGates.ACMEHTTP01IngressPathTypeExact=false</code></pre>
 
 <h2>Config fájlok</h2>
 <p><b>issuer.yaml</b></p>
